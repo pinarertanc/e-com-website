@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 export const auth0 = new Auth0Client();
 
-const ROLES_CLAIM = "https://pyp-admin/roles";
+const ROLES_CLAIM = "https://ecom.com/roles";
 
 export enum AppRole {
   USER = 'user',
