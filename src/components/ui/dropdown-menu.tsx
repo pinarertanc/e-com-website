@@ -75,6 +75,7 @@ function DropdownMenuLabel({
 function DropdownMenuItem({
   className,
   inset,
+  asChild,
   variant = "default",
   ...props
 }: MenuPrimitive.Item.Props & {
