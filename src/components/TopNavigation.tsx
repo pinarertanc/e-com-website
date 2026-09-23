@@ -67,7 +67,7 @@ export function TopNavigation() {
           
           {/* 🛍️ SEPET İKONU */}
           <Link
-            href="/cart"
+            href="user/cart"
             className="relative p-2.5 rounded-full hover:bg-secondary text-foreground/80 hover:text-foreground transition-all cursor-pointer group"
             title="Sepetim"
           >
@@ -105,7 +105,7 @@ export function TopNavigation() {
 
                 <DropdownMenuGroup>
                   <DropdownMenuItem className="rounded-xl cursor-pointer p-0">
-                    <Link href="/sell" className="flex items-center gap-2 w-full px-2 py-1.5 text-primary font-medium">
+                    <Link href="user/sell" className="flex items-center gap-2 w-full px-2 py-1.5 text-primary font-medium">
                       <PlusCircle className="w-4 h-4 text-primary" />
                       Hurça İlan Ekle
                     </Link>
@@ -137,7 +137,7 @@ export function TopNavigation() {
 
                 <DropdownMenuGroup>
                   <DropdownMenuItem className="rounded-xl cursor-pointer p-0 text-destructive focus:bg-destructive/10">
-                    <a href="/api/auth/logout" className="flex items-center gap-2 w-full px-2 py-1.5">
+                    <a href="/auth/logout" className="flex items-center gap-2 w-full px-2 py-1.5">
                       <LogOut className="w-4 h-4" />
                       Çıkış Yap
                     </a>
@@ -154,7 +154,7 @@ export function TopNavigation() {
                       navigationMenuTriggerStyle(),
                       "rounded-full font-bold bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm transition-all hover:scale-105 active:scale-95 px-5"
                     )}
-                    render={<a href="/api/auth/login">Giriş Yap</a>}
+                    render={<a href="/auth/login">Giriş Yap</a>}
                   />
                 </NavigationMenuItem>
               </NavigationMenuList>
