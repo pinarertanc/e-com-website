@@ -4,8 +4,15 @@ import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Search, X } from "lucide-react";
+import { MutedText } from "@/components/typography";
 
-const CATEGORIES = [
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+const CATEGORIES: Category[] = [
   { id: "1", name: "Bebek Arabası & Puset", slug: "bebek-arabasi" },
   { id: "2", name: "Giyim & Tulum", slug: "giyim-tulum" },
   { id: "3", name: "Ayakkabı & Patik", slug: "ayakkabi-patik" },
@@ -21,7 +28,6 @@ export function SearchBar() {
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Arama alanı dışına tıklandığında popover'ı kapat
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -57,7 +63,6 @@ export function SearchBar() {
     inputRef.current?.blur();
   };
 
-  // Türkçe karakter uyumlu dinamik filtreleme
   const filteredCategories = CATEGORIES.filter((category) =>
     category.name
       .toLocaleLowerCase('tr-TR')
@@ -79,10 +84,9 @@ export function SearchBar() {
           }}
           onFocus={() => setOpen(true)}
           onKeyDown={handleKeyDown}
-          className="w-full pl-10 pr-9 py-2 text-sm rounded-full bg-secondary/60 border border-border focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all placeholder:text-muted-foreground/70"
+          className="w-full pl-10 pr-9 py-2 text-sm rounded-full bg-secondary/60 border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all placeholder:text-muted-foreground/70"
         />
 
-        {/* Metin yazıldığında çıkan hızlı temizleme çarpı ikonu */}
         {query && (
           <button
             type="button"
@@ -96,18 +100,20 @@ export function SearchBar() {
           </button>
         )}
 
-        {/* DİNAMİK AÇILIR KATEGORİ MENÜSÜ */}
         {open && (
           <div className="absolute top-full left-0 right-0 mt-2 z-50 p-2 rounded-2xl border border-border shadow-xl bg-popover text-popover-foreground animate-in fade-in-0 zoom-in-95 duration-100">
             <div className="max-h-[260px] overflow-y-auto flex flex-col gap-1">
-              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider px-3 py-1">
+              
+              <MutedText className="text-[10px] font-bold uppercase tracking-wider px-3 py-1 block">
                 {query.trim() === "" ? "Popüler Kategoriler" : "Eşleşen Kategoriler"}
-              </span>
+              </MutedText>
 
               {filteredCategories.length === 0 ? (
-                <div className="py-4 text-center text-xs text-muted-foreground">
-                  Aradığın kategori bulunamadı. Genel arama yapmak için{" "}
-                  <span className="font-semibold text-primary">Enter</span>'a basabilirsin.
+                <div className="py-4 text-center">
+                  <MutedText className="text-xs">
+                    Aradığın kategori bulunamadı. Genel arama yapmak için{" "}
+                    <span className="font-semibold text-primary">Enter</span>'a basabilirsin.
+                  </MutedText>
                 </div>
               ) : (
                 filteredCategories.map((category) => (
@@ -126,7 +132,6 @@ export function SearchBar() {
         )}
       </div>
 
-      {/* 🟢 ARKA PLANI OLMAYAN (GHOST) VAZGEÇ BUTONU */}
       {(open || query) && (
         <Button
           onClick={handleCancel}

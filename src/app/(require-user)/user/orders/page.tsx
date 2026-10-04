@@ -1,8 +1,10 @@
+import { MutedText, PageTitle } from "@/components/typography";
+
 export default function UserOrders(){
 return (
   <div className="flex flex-col items-center justify-center min-h-screen py-2">
-    <h1 className="text-4xl font-bold mb-4">User Orders</h1>
-    <p className="text-lg text-gray-600">This is the user orders page.</p>
+    <PageTitle className="text-4xl font-bold mb-4">User Orders</PageTitle>
+    <MutedText className="text-lg text-gray-600">This is the user orders page.</MutedText>
   </div>
 )
 }

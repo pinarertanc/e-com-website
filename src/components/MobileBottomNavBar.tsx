@@ -18,10 +18,9 @@ export function MobileBottomNav() {
     : "H";
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 px-4 pb-3 pt-2 bg-background/90 backdrop-blur-md border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 px-4 pb-3 pt-2 bg-background/90 backdrop-blur-md border-t border-border shadow-sm">
       <div className="flex items-center justify-around max-w-md mx-auto">
-        
-        {/* 🛍️ SEPET */}
+
         <Link
           href="/cart"
           className={cn(
@@ -33,23 +32,24 @@ export function MobileBottomNav() {
         >
           <div className="relative">
             <ShoppingBag className="w-5 h-5" />
-            {/* Dilerseniz sepet sayısı rozeti (badge) eklenebilir */}
           </div>
-          <span className="text-[11px] tracking-tight">Sepet</span>
+          <span className="text-[11px] font-medium tracking-tight">Sepet</span>
         </Link>
-
-        {/* ➕ ÜRÜN EKLE (Vurgulu Buton) */}
         <Link
           href="/sell"
           className="flex flex-col items-center justify-center -mt-5 cursor-pointer group"
         >
-          <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 group-hover:scale-105 active:scale-95 transition-all">
+          <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/20 group-hover:scale-105 active:scale-95 transition-all">
             <PlusCircle className="w-6 h-6" />
           </div>
-          <span className="text-[11px] font-bold text-primary mt-1">İlan Ekle</span>
+          <span className={cn(
+            "text-[11px] font-bold mt-1 transition-colors",
+            pathname === "/sell" ? "text-primary" : "text-muted-foreground group-hover:text-primary"
+          )}>
+            İlan Ekle
+          </span>
         </Link>
 
-        {/* 👤 PROFİL */}
         {hasSession ? (
           <Link
             href="/user/settings"
@@ -60,13 +60,16 @@ export function MobileBottomNav() {
                 : "text-muted-foreground hover:text-foreground"
             )}
           >
-            <Avatar className="w-7 h-7 border border-border">
+            <Avatar className={cn(
+              "w-7 h-7 border transition-colors",
+              pathname?.startsWith("/user") ? "border-primary" : "border-border"
+            )}>
               <AvatarImage src={user?.picture || ""} alt={user?.name || "Profil"} />
               <AvatarFallback className="bg-secondary text-secondary-foreground font-bold text-[9px]">
                 {userInitials}
               </AvatarFallback>
             </Avatar>
-            <span className="text-[11px] tracking-tight">Profil</span>
+            <span className="text-[11px] font-medium tracking-tight">Profil</span>
           </Link>
         ) : (
           <a
@@ -77,7 +80,7 @@ export function MobileBottomNav() {
             )}
           >
             <User className="w-5 h-5" />
-            <span className="text-[11px] tracking-tight">Giriş Yap</span>
+            <span className="text-[11px] font-medium tracking-tight">Giriş Yap</span>
           </a>
         )}
 
