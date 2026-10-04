@@ -1,125 +1,122 @@
-'use client';
+"use client";
 
-import React, { useState } from "react";
+import { useActionState } from "react";
+import { updateProfileAction } from "@/app/(require-user)/user/settings/action";
+import { ProfileFormProps } from "@/types/user";
+import { actionResponse } from "@/types/form";
+import { MutedText } from "./typography";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Check, Loader2 } from "lucide-react";
-import { UserSettingFormProps } from "@/types/user";
 
-export function UserSettingsForm({ user, initialData }: UserSettingFormProps) {
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+const initialState: actionResponse = {
+  success: false,
+  message: null,
+  error: null,
+  errors: undefined,
+};
 
-  const [phone, setPhone] = useState(initialData?.phone || "");
-  const [city, setCity] = useState(initialData?.city || "");
-  const [district, setDistrict] = useState(initialData?.district || "");
-  const [address, setAddress] = useState(initialData?.address || "");
-
-  const handleSubmit = async (e: React.SubmitEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setSuccess(true);
-      setTimeout(() => setSuccess(false), 3000);
-    } catch (error) {
-      console.error("Ayarlar güncellenirken hata oluştu:", error);
-    } finally {
-      setLoading(false);
-    }
-  }
+export function ProfileForm({ user }: ProfileFormProps) {
+  const [state, formAction, isPending] = useActionState(updateProfileAction, initialState);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form action={formAction} className="space-y-4 w-full max-w-md bg-card text-card-foreground p-6 rounded-xl border border-border shadow-sm">
 
-      <div className="space-y-1.5">
-        <Label htmlFor="phone">
-          Telefon Numarası
-        </Label>
-        <Input
+      <div>
+        <label htmlFor="phone" className="block text-xs font-semibold text-foreground mb-1">
+          Telefon
+        </label>
+        <input
           id="phone"
+          name="phone"
           type="tel"
+          defaultValue={user?.phone || ""}
+          className="w-full px-3 py-2 text-sm bg-background text-foreground border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring transition-all placeholder:text-muted-foreground"
           placeholder="05XX XXX XX XX"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          className="rounded-xl"
-        >
-        </Input>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-1.5">
-          <Label htmlFor="city">Şehir</Label>
-          <Input
-            id="city"
-            type="text"
-            placeholder="İl"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            className="rounded-xl"
-          />
-        </div>
-
-        <div className="space-y-1.5">
-          <Label htmlFor="district">İlçe</Label>
-          <Input
-            id="district"
-            type="text"
-            placeholder="İlçe"
-            value={district}
-            onChange={(e) => setDistrict(e.target.value)}
-            className="rounded-xl"
-          />
-        </div>
-      </div>
-
-      <div className="space-y-1.5">
-        <Label htmlFor="address">Açık Teslimat Adresi</Label>
-        <Textarea
-          id="address"
-          rows={3}
-          placeholder="Mahalle, sokak, bina ve daire numarası giriniz..."
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          className="rounded-xl resize-none"
         />
+        {state.errors?.phone?.[0] && (
+          <MutedText className="text-destructive text-xs mt-1">
+            {state.errors.phone[0]}
+          </MutedText>
+        )}
       </div>
 
-      <div className="pt-2 flex items-center gap-3">
-        <Button
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <label htmlFor="city" className="block text-xs font-semibold text-foreground mb-1">
+            Şehir
+          </label>
+          <input
+            id="city"
+            name="city"
+            type="text"
+            defaultValue={user?.city || ""}
+            className="w-full px-3 py-2 text-sm bg-background text-foreground border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring transition-all placeholder:text-muted-foreground"
+            placeholder="İstanbul"
+          />
+          {state.errors?.city?.[0] && (
+            <MutedText className="text-destructive text-xs mt-1">
+              {state.errors.city[0]}
+            </MutedText>
+          )}
+        </div>
+
+        <div>
+          <label htmlFor="district" className="block text-xs font-semibold text-foreground mb-1">
+            İlçe
+          </label>
+          <input
+            id="district"
+            name="district"
+            type="text"
+            defaultValue={user?.district || ""}
+            className="w-full px-3 py-2 text-sm bg-background text-foreground border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring transition-all placeholder:text-muted-foreground"
+            placeholder="Kadıköy"
+          />
+          {state.errors?.district?.[0] && (
+            <MutedText className="text-destructive text-xs mt-1">
+              {state.errors.district[0]}
+            </MutedText>
+          )}
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="address" className="block text-xs font-semibold text-foreground mb-1">
+          Adres
+        </label>
+        <textarea
+          id="address"
+          name="address"
+          rows={3}
+          defaultValue={user?.address || ""}
+          className="w-full px-3 py-2 text-sm bg-background text-foreground border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring transition-all placeholder:text-muted-foreground"
+          placeholder="Açık adresiniz..."
+        />
+        {state.errors?.address?.[0] && (
+          <MutedText className="text-destructive text-xs mt-1">
+            {state.errors.address[0]}
+          </MutedText>
+        )}
+      </div>
+
+      {state.error && !state.errors && (
+        <div className="p-3 text-xs bg-destructive/10 text-destructive border border-destructive/20 rounded-lg">
+          {state.error}
+        </div>
+      )}
+
+      {state.success && (
+        <div className="p-3 text-xs bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 rounded-lg">
+          {state.message}
+        </div>
+      )}
+
+      <Button
         type="submit"
-        disabled={loading}
-        className="rounded-full font-bold bg-primary text-primary-foreground hover:bg-primary/90 px-6"
-        >
-          {loading? (
-            <>
-            <Loader2 className="w-4 h-4 mr-2 animate-spin"/>
-            Kaydediliyor...
-            </>
-          ) : success ? (
-            <>
-            <Check className="w-4 h-4 mr-2 text-emerald-200" />
-            Gerekli Bilgiler Kaydedildi!
-            </>
-          ) : (
-            <>   
-            Değişiklikleri Kaydet       
-            </>
-          )
-          }
-          
-        </Button>
-
-      </div>
-
-
-
+        disabled={isPending}
+        className="w-full font-medium text-sm py-2.5 rounded-lg transition-colors"
+      >
+        {isPending ? "Kaydediliyor..." : "Kaydet"}
+      </Button>
     </form>
-  )
+  );
 }
-
-
-

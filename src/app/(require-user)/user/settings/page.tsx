@@ -1,12 +1,11 @@
-import { getSessionUser } from "@/lib/auth0"; // Veya oturum açmış kullanıcıyı çeken yardımcı fonksiyonunuz
-import { UserSettingsForm } from "@/components/UserSettingsForm";
+import { getSessionUser } from "@/lib/auth0"; 
+import { ProfileForm } from "@/components/UserSettingsForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Shield, MapPin } from "lucide-react";
+import { MutedText, PageTitle, BodyText } from "@/components/typography";
 
 export default async function UserSettingsPage() {
-  // Layout zaten koruma sağladığı için tekrar redirect kontrolü yapmamıza gerek yok.
-  // Sadece sayfada göstermek üzere kullanıcı verisini alıyoruz.
   const user = await getSessionUser();
 
   const userInitials = user?.name
@@ -14,8 +13,7 @@ export default async function UserSettingsPage() {
     : "H";
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 space-y-6">
-      {/* BAŞLIK VE ÖZET BİLGİ */}
+    <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 space-y-6 bg-background text-foreground min-h-screen">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-border">
         <div className="flex items-center gap-4">
           <Avatar className="w-16 h-16 border-2 border-primary/20 shadow-md">
@@ -25,18 +23,17 @@ export default async function UserSettingsPage() {
             </AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-2xl font-black text-foreground tracking-tight">
+            <PageTitle>
               Hesap Ayarları
-            </h1>
-            <p className="text-sm text-muted-foreground">
+            </PageTitle>
+            <MutedText>
               Profil bilgilerinizi, teslimat adresinizi ve bildirim tercihlerinizi yönetin.
-            </p>
+            </MutedText>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* SOL KOLON: AUTH0 BİLGİLERİ */}
         <Card className="md:col-span-1 rounded-2xl border-border shadow-sm h-fit">
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
@@ -49,25 +46,24 @@ export default async function UserSettingsPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
                 Ad Soyad
               </label>
-              <p className="font-medium text-sm text-foreground mt-0.5">
+              <BodyText>
                 {user?.name || "Belirtilmedi"}
-              </p>
+              </BodyText>
             </div>
             <div>
-              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
                 E-Posta Adresi
               </label>
-              <p className="font-medium text-sm text-foreground mt-0.5 truncate">
+              <BodyText className="truncate">
                 {user?.email || "Belirtilmedi"}
-              </p>
+              </BodyText>
             </div>
           </CardContent>
         </Card>
 
-        {/* SAĞ KOLON: DÜZENLENEBİLİR FORM */}
         <Card className="md:col-span-2 rounded-2xl border-border shadow-sm">
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
@@ -79,9 +75,10 @@ export default async function UserSettingsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <UserSettingsForm user={user} />
+            <ProfileForm user={user} />
           </CardContent>
         </Card>
+
       </div>
     </div>
   );

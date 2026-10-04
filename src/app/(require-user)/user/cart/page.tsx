@@ -1,8 +1,11 @@
-export default function UserCart(){
-return (
-  <div className="flex flex-col items-center justify-center min-h-screen py-2">
-    <h1 className="text-4xl font-bold mb-4">User Cart</h1>
-    <p className="text-lg text-gray-600">This is the user Cart page.</p>
-  </div>
-)
+
+import { PageTitle, MutedText } from "@/components/typography";
+
+export default function CartPage() {
+  return (
+    <div className="space-y-2">
+      <PageTitle>User Cart</PageTitle>
+      <MutedText>This is the user Cart page.</MutedText>
+    </div>
+  );
 }
