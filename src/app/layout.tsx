@@ -4,10 +4,14 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TopNavigation } from "@/components/TopNavigation";
 import { MobileBottomNav } from "@/components/MobileBottomNavBar";
+import { ThemeProvider } from "@/components/themeProvider";
 
-const publicSansHeading = Public_Sans({subsets:['latin'],variable:'--font-heading'});
+const publicSansHeading = Public_Sans({
+  subsets: ["latin"],
+  variable: "--font-heading",
+});
 
-const figtree = Figtree({subsets:['latin'],variable:'--font-sans'});
+const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,8 +53,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Hurç | Çocuk Eşyalarını Paraya Çevir",
-    description:
-      "Küçülen çocuk eşyalarını hurçtan çıkar, paraya çevir!",
+    description: "Küçülen çocuk eşyalarını hurçtan çıkar, paraya çevir!",
   },
   robots: {
     index: true,
@@ -62,14 +65,28 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", figtree.variable, publicSansHeading.variable)}
+      className={cn(
+        "h-full",
+        "antialiased",
+        geistSans.variable,
+        geistMono.variable,
+        "font-sans",
+        figtree.variable,
+        publicSansHeading.variable,
+      )}
+      suppressHydrationWarning
     >
-
       <body className="min-h-full flex flex-col">
-        <TopNavigation />
-        {children}
-        <MobileBottomNav />
-        </body>
+        <ThemeProvider
+        attribute="class"
+  defaultTheme="system"
+  enableSystem
+  disableTransitionOnChange>
+          <TopNavigation />
+          {children}
+          <MobileBottomNav />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

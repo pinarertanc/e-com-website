@@ -39,7 +39,7 @@ export function TopNavigation() {
 
   return (
     <header className="sticky top-3 z-40 px-3 sm:px-4 max-w-6xl mx-auto w-full">
-      <div className="bg-background/80 backdrop-blur-md border border-border rounded-full px-4 sm:px-6 py-1.5 shadow-sm transition-all flex items-center justify-between gap-2 sm:gap-4 h-16 sm:h-20">
+      <div className="bg-background/80 dark:bg-card/90 backdrop-blur-md border border-border dark:border-primary/20 rounded-full px-4 sm:px-6 py-1.5 shadow-md dark:shadow-[0_8px_30px_rgb(0,0,0,0.5)] dark:shadow-primary/10 transition-all flex items-center justify-between gap-2 sm:gap-4 h-16 sm:h-20">
         
         <div className="shrink-0 flex items-center">
           <Link href="/" className="flex items-center group py-1">

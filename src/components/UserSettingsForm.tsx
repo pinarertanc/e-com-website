@@ -42,7 +42,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label htmlFor="city" className="block text-xs font-semibold text-foreground mb-1">
-            Şehir
+            İl
           </label>
           <input
             id="city"
