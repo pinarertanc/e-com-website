@@ -1,6 +1,4 @@
 // use prisma-8
-
-
 model Product {
   id          ObjectId         @id @map("_id")
   name        String           @unique
@@ -8,18 +6,17 @@ model Product {
   category    Category
   condition   ProductCondition
   priceCents  Int32
-  currency    Currency         
-  stock       Int32              
+  currency    Currency
+  stock       Int32
   ageGroup    AgeGroup?
   imageUrl    String
-  isActive    Bool         
-
+  isActive    Bool
 
   sellerId    ObjectId
   seller      User             @relation("UserProducts", fields: [sellerId], references: [id])
 
-  createdAt   Date        
-  updatedAt   Date        
+  createdAt   Date
+  updatedAt   Date
 
   @@map("products")
 }
@@ -33,14 +30,14 @@ model User {
   phone          String?
   profilePicture String?
 
-  role           Role     
+  role           Role
 
   city           String?
   district       String?
 
   products       Product[] @relation("UserProducts")
 
-  createdAt      Date 
+  createdAt      Date
   updatedAt      Date
 
   @@map("users")
