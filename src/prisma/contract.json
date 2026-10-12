@@ -4,8 +4,8 @@
   "target": "mongo",
   "profileHash": "251b3ce23f6c9f561892e7c1af9d2cc941a13d64ba1aa7226b90036b09568cc3",
   "roots": {
-    "posts": {
-      "model": "Post",
+    "products": {
+      "model": "Product",
       "namespace": "__unbound__"
     },
     "users": {
@@ -16,8 +16,131 @@
   "domain": {
     "namespaces": {
       "__unbound__": {
+        "enum": {
+          "AgeGroup": {
+            "codecId": "mongo/string@1",
+            "members": [
+              {
+                "name": "NEWBORN",
+                "value": "NEWBORN"
+              },
+              {
+                "name": "BABY_3_12M",
+                "value": "BABY_3_12M"
+              },
+              {
+                "name": "TODDLER_1_3Y",
+                "value": "TODDLER_1_3Y"
+              },
+              {
+                "name": "KIDS_3_6Y",
+                "value": "KIDS_3_6Y"
+              },
+              {
+                "name": "KIDS_6_12Y",
+                "value": "KIDS_6_12Y"
+              },
+              {
+                "name": "MATERNITY",
+                "value": "MATERNITY"
+              }
+            ]
+          },
+          "Category": {
+            "codecId": "mongo/string@1",
+            "members": [
+              {
+                "name": "STROLLERS_AND_CARRIERS",
+                "value": "STROLLERS_AND_CARRIERS"
+              },
+              {
+                "name": "CLOTHING_AND_SHOES",
+                "value": "CLOTHING_AND_SHOES"
+              },
+              {
+                "name": "NURSERY_AND_FURNITURE",
+                "value": "NURSERY_AND_FURNITURE"
+              },
+              {
+                "name": "FEEDING_AND_CARE",
+                "value": "FEEDING_AND_CARE"
+              },
+              {
+                "name": "TOYS_AND_BOOKS",
+                "value": "TOYS_AND_BOOKS"
+              },
+              {
+                "name": "MATERNITY_AND_MOM",
+                "value": "MATERNITY_AND_MOM"
+              },
+              {
+                "name": "OTHER",
+                "value": "OTHER"
+              }
+            ]
+          },
+          "Currency": {
+            "codecId": "mongo/string@1",
+            "members": [
+              {
+                "name": "EUR",
+                "value": "EUR"
+              },
+              {
+                "name": "USD",
+                "value": "USD"
+              },
+              {
+                "name": "GBP",
+                "value": "GBP"
+              },
+              {
+                "name": "TRY",
+                "value": "TRY"
+              }
+            ]
+          },
+          "ProductCondition": {
+            "codecId": "mongo/string@1",
+            "members": [
+              {
+                "name": "NEW_WITH_TAG",
+                "value": "NEW_WITH_TAG"
+              },
+              {
+                "name": "NEW_WITHOUT_TAG",
+                "value": "NEW_WITHOUT_TAG"
+              },
+              {
+                "name": "LIKE_NEW",
+                "value": "LIKE_NEW"
+              },
+              {
+                "name": "USED_GOOD",
+                "value": "USED_GOOD"
+              },
+              {
+                "name": "USED_FAIR",
+                "value": "USED_FAIR"
+              }
+            ]
+          },
+          "Role": {
+            "codecId": "mongo/string@1",
+            "members": [
+              {
+                "name": "USER",
+                "value": "USER"
+              },
+              {
+                "name": "ADMIN",
+                "value": "ADMIN"
+              }
+            ]
+          }
+        },
         "models": {
-          "Post": {
+          "Product": {
             "fields": {
               "_id": {
                 "nullable": false,
@@ -26,35 +149,129 @@
                   "kind": "scalar"
                 }
               },
-              "authorId": {
+              "ageGroup": {
+                "nullable": true,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "AgeGroup",
+                  "namespaceId": "__unbound__",
+                  "plane": "domain"
+                }
+              },
+              "category": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "Category",
+                  "namespaceId": "__unbound__",
+                  "plane": "domain"
+                }
+              },
+              "condition": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "ProductCondition",
+                  "namespaceId": "__unbound__",
+                  "plane": "domain"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/date@1",
+                  "kind": "scalar"
+                }
+              },
+              "currency": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "Currency",
+                  "namespaceId": "__unbound__",
+                  "plane": "domain"
+                }
+              },
+              "description": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "imageUrl": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "isActive": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "priceCents": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/int32@1",
+                  "kind": "scalar"
+                }
+              },
+              "sellerId": {
                 "nullable": false,
                 "type": {
                   "codecId": "mongo/objectId@1",
                   "kind": "scalar"
                 }
               },
-              "content": {
-                "nullable": true,
+              "stock": {
+                "nullable": false,
                 "type": {
-                  "codecId": "mongo/string@1",
+                  "codecId": "mongo/int32@1",
                   "kind": "scalar"
                 }
               },
-              "title": {
+              "updatedAt": {
                 "nullable": false,
                 "type": {
-                  "codecId": "mongo/string@1",
+                  "codecId": "mongo/date@1",
                   "kind": "scalar"
                 }
               }
             },
             "relations": {
-              "author": {
+              "seller": {
                 "cardinality": "N:1",
                 "nullable": false,
                 "on": {
                   "localFields": [
-                    "authorId"
+                    "sellerId"
                   ],
                   "targetFields": [
                     "_id"
@@ -67,7 +284,7 @@
               }
             },
             "storage": {
-              "collection": "posts"
+              "collection": "products"
             }
           },
           "User": {
@@ -79,6 +296,27 @@
                   "kind": "scalar"
                 }
               },
+              "city": {
+                "nullable": true,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/date@1",
+                  "kind": "scalar"
+                }
+              },
+              "district": {
+                "nullable": true,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
               "email": {
                 "nullable": false,
                 "type": {
@@ -86,34 +324,75 @@
                   "kind": "scalar"
                 }
               },
-              "name": {
+              "firstName": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "lastName": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "password": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "phone": {
                 "nullable": true,
                 "type": {
                   "codecId": "mongo/string@1",
                   "kind": "scalar"
                 }
               },
-              "username": {
+              "profilePicture": {
                 "nullable": true,
                 "type": {
                   "codecId": "mongo/string@1",
                   "kind": "scalar"
                 }
+              },
+              "role": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "Role",
+                  "namespaceId": "__unbound__",
+                  "plane": "domain"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/date@1",
+                  "kind": "scalar"
+                }
               }
             },
             "relations": {
-              "posts": {
+              "products": {
                 "cardinality": "1:N",
                 "on": {
                   "localFields": [
                     "_id"
                   ],
                   "targetFields": [
-                    "authorId"
+                    "sellerId"
                   ]
                 },
                 "to": {
-                  "model": "Post",
+                  "model": "Product",
                   "namespace": "__unbound__"
                 }
               }
@@ -131,7 +410,19 @@
       "__unbound__": {
         "entries": {
           "collection": {
-            "posts": {
+            "products": {
+              "indexes": [
+                {
+                  "keys": [
+                    {
+                      "direction": 1,
+                      "field": "name"
+                    }
+                  ],
+                  "kind": "mongo-index",
+                  "unique": true
+                }
+              ],
               "kind": "mongo-collection",
               "validator": {
                 "jsonSchema": {
@@ -141,23 +432,94 @@
                     "_id": {
                       "bsonType": "objectId"
                     },
-                    "authorId": {
-                      "bsonType": "objectId"
-                    },
-                    "content": {
+                    "ageGroup": {
                       "bsonType": [
                         "null",
                         "string"
+                      ],
+                      "enum": [
+                        "NEWBORN",
+                        "BABY_3_12M",
+                        "TODDLER_1_3Y",
+                        "KIDS_3_6Y",
+                        "KIDS_6_12Y",
+                        "MATERNITY",
+                        null
                       ]
                     },
-                    "title": {
+                    "category": {
+                      "bsonType": "string",
+                      "enum": [
+                        "STROLLERS_AND_CARRIERS",
+                        "CLOTHING_AND_SHOES",
+                        "NURSERY_AND_FURNITURE",
+                        "FEEDING_AND_CARE",
+                        "TOYS_AND_BOOKS",
+                        "MATERNITY_AND_MOM",
+                        "OTHER"
+                      ]
+                    },
+                    "condition": {
+                      "bsonType": "string",
+                      "enum": [
+                        "NEW_WITH_TAG",
+                        "NEW_WITHOUT_TAG",
+                        "LIKE_NEW",
+                        "USED_GOOD",
+                        "USED_FAIR"
+                      ]
+                    },
+                    "createdAt": {
+                      "bsonType": "date"
+                    },
+                    "currency": {
+                      "bsonType": "string",
+                      "enum": [
+                        "EUR",
+                        "USD",
+                        "GBP",
+                        "TRY"
+                      ]
+                    },
+                    "description": {
                       "bsonType": "string"
+                    },
+                    "imageUrl": {
+                      "bsonType": "string"
+                    },
+                    "isActive": {
+                      "bsonType": "bool"
+                    },
+                    "name": {
+                      "bsonType": "string"
+                    },
+                    "priceCents": {
+                      "bsonType": "int"
+                    },
+                    "sellerId": {
+                      "bsonType": "objectId"
+                    },
+                    "stock": {
+                      "bsonType": "int"
+                    },
+                    "updatedAt": {
+                      "bsonType": "date"
                     }
                   },
                   "required": [
                     "_id",
-                    "authorId",
-                    "title"
+                    "category",
+                    "condition",
+                    "createdAt",
+                    "currency",
+                    "description",
+                    "imageUrl",
+                    "isActive",
+                    "name",
+                    "priceCents",
+                    "sellerId",
+                    "stock",
+                    "updatedAt"
                   ]
                 },
                 "kind": "mongo-validator",
@@ -187,25 +549,65 @@
                     "_id": {
                       "bsonType": "objectId"
                     },
+                    "city": {
+                      "bsonType": [
+                        "null",
+                        "string"
+                      ]
+                    },
+                    "createdAt": {
+                      "bsonType": "date"
+                    },
+                    "district": {
+                      "bsonType": [
+                        "null",
+                        "string"
+                      ]
+                    },
                     "email": {
                       "bsonType": "string"
                     },
-                    "name": {
+                    "firstName": {
+                      "bsonType": "string"
+                    },
+                    "lastName": {
+                      "bsonType": "string"
+                    },
+                    "password": {
+                      "bsonType": "string"
+                    },
+                    "phone": {
                       "bsonType": [
                         "null",
                         "string"
                       ]
                     },
-                    "username": {
+                    "profilePicture": {
                       "bsonType": [
                         "null",
                         "string"
                       ]
+                    },
+                    "role": {
+                      "bsonType": "string",
+                      "enum": [
+                        "USER",
+                        "ADMIN"
+                      ]
+                    },
+                    "updatedAt": {
+                      "bsonType": "date"
                     }
                   },
                   "required": [
                     "_id",
-                    "email"
+                    "createdAt",
+                    "email",
+                    "firstName",
+                    "lastName",
+                    "password",
+                    "role",
+                    "updatedAt"
                   ]
                 },
                 "kind": "mongo-validator",
@@ -213,13 +615,64 @@
                 "validationLevel": "strict"
               }
             }
+          },
+          "valueSet": {
+            "AgeGroup": {
+              "kind": "valueSet",
+              "values": [
+                "NEWBORN",
+                "BABY_3_12M",
+                "TODDLER_1_3Y",
+                "KIDS_3_6Y",
+                "KIDS_6_12Y",
+                "MATERNITY"
+              ]
+            },
+            "Category": {
+              "kind": "valueSet",
+              "values": [
+                "STROLLERS_AND_CARRIERS",
+                "CLOTHING_AND_SHOES",
+                "NURSERY_AND_FURNITURE",
+                "FEEDING_AND_CARE",
+                "TOYS_AND_BOOKS",
+                "MATERNITY_AND_MOM",
+                "OTHER"
+              ]
+            },
+            "Currency": {
+              "kind": "valueSet",
+              "values": [
+                "EUR",
+                "USD",
+                "GBP",
+                "TRY"
+              ]
+            },
+            "ProductCondition": {
+              "kind": "valueSet",
+              "values": [
+                "NEW_WITH_TAG",
+                "NEW_WITHOUT_TAG",
+                "LIKE_NEW",
+                "USED_GOOD",
+                "USED_FAIR"
+              ]
+            },
+            "Role": {
+              "kind": "valueSet",
+              "values": [
+                "USER",
+                "ADMIN"
+              ]
+            }
           }
         },
         "id": "__unbound__",
         "kind": "mongo-database"
       }
     },
-    "storageHash": "1b32cdae5987d45006e4c8a26db4f87732e4c164ea47402253364582b1818b73"
+    "storageHash": "f391b413f23bef4fc39c15aabc76ffc8b173e9331cfe7bef93ba49187138d14d"
   },
   "capabilities": {},
   "extensions": {},

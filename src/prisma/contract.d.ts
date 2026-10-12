@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-mongo/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'1b32cdae5987d45006e4c8a26db4f87732e4c164ea47402253364582b1818b73'>;
+  StorageHashBase<'f391b413f23bef4fc39c15aabc76ffc8b173e9331cfe7bef93ba49187138d14d'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'251b3ce23f6c9f561892e7c1af9d2cc941a13d64ba1aa7226b90036b09568cc3'>;
@@ -27,59 +27,139 @@ export type CodecTypes = MongoCodecTypes;
 
 export type FieldOutputTypes = {
   readonly __unbound__: {
-    readonly Post: {
+    readonly Product: {
       readonly _id: CodecTypes['mongo/objectId@1']['output'];
-      readonly authorId: CodecTypes['mongo/objectId@1']['output'];
-      readonly content: CodecTypes['mongo/string@1']['output'] | null;
-      readonly title: CodecTypes['mongo/string@1']['output'];
+      readonly ageGroup:
+        'NEWBORN' | 'BABY_3_12M' | 'TODDLER_1_3Y' | 'KIDS_3_6Y' | 'KIDS_6_12Y' | 'MATERNITY' | null;
+      readonly category:
+        | 'STROLLERS_AND_CARRIERS'
+        | 'CLOTHING_AND_SHOES'
+        | 'NURSERY_AND_FURNITURE'
+        | 'FEEDING_AND_CARE'
+        | 'TOYS_AND_BOOKS'
+        | 'MATERNITY_AND_MOM'
+        | 'OTHER';
+      readonly condition:
+        'NEW_WITH_TAG' | 'NEW_WITHOUT_TAG' | 'LIKE_NEW' | 'USED_GOOD' | 'USED_FAIR';
+      readonly createdAt: CodecTypes['mongo/date@1']['output'];
+      readonly currency: 'EUR' | 'USD' | 'GBP' | 'TRY';
+      readonly description: CodecTypes['mongo/string@1']['output'];
+      readonly imageUrl: CodecTypes['mongo/string@1']['output'];
+      readonly isActive: CodecTypes['mongo/bool@1']['output'];
+      readonly name: CodecTypes['mongo/string@1']['output'];
+      readonly priceCents: CodecTypes['mongo/int32@1']['output'];
+      readonly sellerId: CodecTypes['mongo/objectId@1']['output'];
+      readonly stock: CodecTypes['mongo/int32@1']['output'];
+      readonly updatedAt: CodecTypes['mongo/date@1']['output'];
     };
     readonly User: {
       readonly _id: CodecTypes['mongo/objectId@1']['output'];
+      readonly city: CodecTypes['mongo/string@1']['output'] | null;
+      readonly createdAt: CodecTypes['mongo/date@1']['output'];
+      readonly district: CodecTypes['mongo/string@1']['output'] | null;
       readonly email: CodecTypes['mongo/string@1']['output'];
-      readonly name: CodecTypes['mongo/string@1']['output'] | null;
-      readonly username: CodecTypes['mongo/string@1']['output'] | null;
+      readonly firstName: CodecTypes['mongo/string@1']['output'];
+      readonly lastName: CodecTypes['mongo/string@1']['output'];
+      readonly password: CodecTypes['mongo/string@1']['output'];
+      readonly phone: CodecTypes['mongo/string@1']['output'] | null;
+      readonly profilePicture: CodecTypes['mongo/string@1']['output'] | null;
+      readonly role: 'USER' | 'ADMIN';
+      readonly updatedAt: CodecTypes['mongo/date@1']['output'];
     };
   };
 };
 export type FieldInputTypes = {
   readonly __unbound__: {
-    readonly Post: {
+    readonly Product: {
       readonly _id: CodecTypes['mongo/objectId@1']['input'];
-      readonly authorId: CodecTypes['mongo/objectId@1']['input'];
-      readonly content: CodecTypes['mongo/string@1']['input'] | null;
-      readonly title: CodecTypes['mongo/string@1']['input'];
+      readonly ageGroup:
+        'NEWBORN' | 'BABY_3_12M' | 'TODDLER_1_3Y' | 'KIDS_3_6Y' | 'KIDS_6_12Y' | 'MATERNITY' | null;
+      readonly category:
+        | 'STROLLERS_AND_CARRIERS'
+        | 'CLOTHING_AND_SHOES'
+        | 'NURSERY_AND_FURNITURE'
+        | 'FEEDING_AND_CARE'
+        | 'TOYS_AND_BOOKS'
+        | 'MATERNITY_AND_MOM'
+        | 'OTHER';
+      readonly condition:
+        'NEW_WITH_TAG' | 'NEW_WITHOUT_TAG' | 'LIKE_NEW' | 'USED_GOOD' | 'USED_FAIR';
+      readonly createdAt: CodecTypes['mongo/date@1']['input'];
+      readonly currency: 'EUR' | 'USD' | 'GBP' | 'TRY';
+      readonly description: CodecTypes['mongo/string@1']['input'];
+      readonly imageUrl: CodecTypes['mongo/string@1']['input'];
+      readonly isActive: CodecTypes['mongo/bool@1']['input'];
+      readonly name: CodecTypes['mongo/string@1']['input'];
+      readonly priceCents: CodecTypes['mongo/int32@1']['input'];
+      readonly sellerId: CodecTypes['mongo/objectId@1']['input'];
+      readonly stock: CodecTypes['mongo/int32@1']['input'];
+      readonly updatedAt: CodecTypes['mongo/date@1']['input'];
     };
     readonly User: {
       readonly _id: CodecTypes['mongo/objectId@1']['input'];
+      readonly city: CodecTypes['mongo/string@1']['input'] | null;
+      readonly createdAt: CodecTypes['mongo/date@1']['input'];
+      readonly district: CodecTypes['mongo/string@1']['input'] | null;
       readonly email: CodecTypes['mongo/string@1']['input'];
-      readonly name: CodecTypes['mongo/string@1']['input'] | null;
-      readonly username: CodecTypes['mongo/string@1']['input'] | null;
+      readonly firstName: CodecTypes['mongo/string@1']['input'];
+      readonly lastName: CodecTypes['mongo/string@1']['input'];
+      readonly password: CodecTypes['mongo/string@1']['input'];
+      readonly phone: CodecTypes['mongo/string@1']['input'] | null;
+      readonly profilePicture: CodecTypes['mongo/string@1']['input'] | null;
+      readonly role: 'USER' | 'ADMIN';
+      readonly updatedAt: CodecTypes['mongo/date@1']['input'];
     };
   };
 };
 
 export namespace Models {
-  export type unbound_Post = {
+  export type unbound_Product = {
     _id: CodecTypes['mongo/objectId@1']['output'];
-    authorId: CodecTypes['mongo/objectId@1']['output'];
-    content: CodecTypes['mongo/string@1']['output'] | null;
-    title: CodecTypes['mongo/string@1']['output'];
-    author: unbound_User;
-    readonly [RelationKeys]?: 'author';
+    ageGroup:
+      'NEWBORN' | 'BABY_3_12M' | 'TODDLER_1_3Y' | 'KIDS_3_6Y' | 'KIDS_6_12Y' | 'MATERNITY' | null;
+    category:
+      | 'STROLLERS_AND_CARRIERS'
+      | 'CLOTHING_AND_SHOES'
+      | 'NURSERY_AND_FURNITURE'
+      | 'FEEDING_AND_CARE'
+      | 'TOYS_AND_BOOKS'
+      | 'MATERNITY_AND_MOM'
+      | 'OTHER';
+    condition: 'NEW_WITH_TAG' | 'NEW_WITHOUT_TAG' | 'LIKE_NEW' | 'USED_GOOD' | 'USED_FAIR';
+    createdAt: CodecTypes['mongo/date@1']['output'];
+    currency: 'EUR' | 'USD' | 'GBP' | 'TRY';
+    description: CodecTypes['mongo/string@1']['output'];
+    imageUrl: CodecTypes['mongo/string@1']['output'];
+    isActive: CodecTypes['mongo/bool@1']['output'];
+    name: CodecTypes['mongo/string@1']['output'];
+    priceCents: CodecTypes['mongo/int32@1']['output'];
+    sellerId: CodecTypes['mongo/objectId@1']['output'];
+    stock: CodecTypes['mongo/int32@1']['output'];
+    updatedAt: CodecTypes['mongo/date@1']['output'];
+    seller: unbound_User;
+    readonly [RelationKeys]?: 'seller';
   };
   export type unbound_User = {
     _id: CodecTypes['mongo/objectId@1']['output'];
+    city: CodecTypes['mongo/string@1']['output'] | null;
+    createdAt: CodecTypes['mongo/date@1']['output'];
+    district: CodecTypes['mongo/string@1']['output'] | null;
     email: CodecTypes['mongo/string@1']['output'];
-    name: CodecTypes['mongo/string@1']['output'] | null;
-    username: CodecTypes['mongo/string@1']['output'] | null;
-    posts: unbound_Post[];
-    readonly [RelationKeys]?: 'posts';
+    firstName: CodecTypes['mongo/string@1']['output'];
+    lastName: CodecTypes['mongo/string@1']['output'];
+    password: CodecTypes['mongo/string@1']['output'];
+    phone: CodecTypes['mongo/string@1']['output'] | null;
+    profilePicture: CodecTypes['mongo/string@1']['output'] | null;
+    role: 'USER' | 'ADMIN';
+    updatedAt: CodecTypes['mongo/date@1']['output'];
+    products: unbound_Product[];
+    readonly [RelationKeys]?: 'products';
   };
 }
 
 export declare const models: {
   __unbound__: {
-    Post: Models.unbound_Post;
+    Product: Models.unbound_Product;
     User: Models.unbound_User;
   };
 };
@@ -94,7 +174,14 @@ type ContractBase = Omit<
         readonly kind: 'mongo-database';
         readonly entries: {
           readonly collection: {
-            readonly posts: {
+            readonly products: {
+              readonly indexes: readonly [
+                {
+                  readonly keys: readonly [{ readonly direction: 1; readonly field: 'name' }];
+                  readonly kind: 'mongo-index';
+                  readonly unique: true;
+                },
+              ];
               readonly kind: 'mongo-collection';
               readonly validator: {
                 readonly jsonSchema: {
@@ -102,11 +189,69 @@ type ContractBase = Omit<
                   readonly bsonType: 'object';
                   readonly properties: {
                     readonly _id: { readonly bsonType: 'objectId' };
-                    readonly authorId: { readonly bsonType: 'objectId' };
-                    readonly content: { readonly bsonType: readonly ['null', 'string'] };
-                    readonly title: { readonly bsonType: 'string' };
+                    readonly ageGroup: {
+                      readonly bsonType: readonly ['null', 'string'];
+                      readonly enum: readonly [
+                        'NEWBORN',
+                        'BABY_3_12M',
+                        'TODDLER_1_3Y',
+                        'KIDS_3_6Y',
+                        'KIDS_6_12Y',
+                        'MATERNITY',
+                        null,
+                      ];
+                    };
+                    readonly category: {
+                      readonly bsonType: 'string';
+                      readonly enum: readonly [
+                        'STROLLERS_AND_CARRIERS',
+                        'CLOTHING_AND_SHOES',
+                        'NURSERY_AND_FURNITURE',
+                        'FEEDING_AND_CARE',
+                        'TOYS_AND_BOOKS',
+                        'MATERNITY_AND_MOM',
+                        'OTHER',
+                      ];
+                    };
+                    readonly condition: {
+                      readonly bsonType: 'string';
+                      readonly enum: readonly [
+                        'NEW_WITH_TAG',
+                        'NEW_WITHOUT_TAG',
+                        'LIKE_NEW',
+                        'USED_GOOD',
+                        'USED_FAIR',
+                      ];
+                    };
+                    readonly createdAt: { readonly bsonType: 'date' };
+                    readonly currency: {
+                      readonly bsonType: 'string';
+                      readonly enum: readonly ['EUR', 'USD', 'GBP', 'TRY'];
+                    };
+                    readonly description: { readonly bsonType: 'string' };
+                    readonly imageUrl: { readonly bsonType: 'string' };
+                    readonly isActive: { readonly bsonType: 'bool' };
+                    readonly name: { readonly bsonType: 'string' };
+                    readonly priceCents: { readonly bsonType: 'int' };
+                    readonly sellerId: { readonly bsonType: 'objectId' };
+                    readonly stock: { readonly bsonType: 'int' };
+                    readonly updatedAt: { readonly bsonType: 'date' };
                   };
-                  readonly required: readonly ['_id', 'authorId', 'title'];
+                  readonly required: readonly [
+                    '_id',
+                    'category',
+                    'condition',
+                    'createdAt',
+                    'currency',
+                    'description',
+                    'imageUrl',
+                    'isActive',
+                    'name',
+                    'priceCents',
+                    'sellerId',
+                    'stock',
+                    'updatedAt',
+                  ];
                 };
                 readonly kind: 'mongo-validator';
                 readonly validationAction: 'error';
@@ -128,11 +273,31 @@ type ContractBase = Omit<
                   readonly bsonType: 'object';
                   readonly properties: {
                     readonly _id: { readonly bsonType: 'objectId' };
+                    readonly city: { readonly bsonType: readonly ['null', 'string'] };
+                    readonly createdAt: { readonly bsonType: 'date' };
+                    readonly district: { readonly bsonType: readonly ['null', 'string'] };
                     readonly email: { readonly bsonType: 'string' };
-                    readonly name: { readonly bsonType: readonly ['null', 'string'] };
-                    readonly username: { readonly bsonType: readonly ['null', 'string'] };
+                    readonly firstName: { readonly bsonType: 'string' };
+                    readonly lastName: { readonly bsonType: 'string' };
+                    readonly password: { readonly bsonType: 'string' };
+                    readonly phone: { readonly bsonType: readonly ['null', 'string'] };
+                    readonly profilePicture: { readonly bsonType: readonly ['null', 'string'] };
+                    readonly role: {
+                      readonly bsonType: 'string';
+                      readonly enum: readonly ['USER', 'ADMIN'];
+                    };
+                    readonly updatedAt: { readonly bsonType: 'date' };
                   };
-                  readonly required: readonly ['_id', 'email'];
+                  readonly required: readonly [
+                    '_id',
+                    'createdAt',
+                    'email',
+                    'firstName',
+                    'lastName',
+                    'password',
+                    'role',
+                    'updatedAt',
+                  ];
                 };
                 readonly kind: 'mongo-validator';
                 readonly validationAction: 'error';
@@ -150,34 +315,77 @@ type ContractBase = Omit<
   readonly target: 'mongo';
   readonly targetFamily: 'mongo';
   readonly roots: {
-    readonly posts: { readonly namespace: '__unbound__' & NamespaceId; readonly model: 'Post' };
+    readonly products: {
+      readonly namespace: '__unbound__' & NamespaceId;
+      readonly model: 'Product';
+    };
     readonly users: { readonly namespace: '__unbound__' & NamespaceId; readonly model: 'User' };
   };
   readonly domain: {
     readonly namespaces: {
       readonly __unbound__: {
         readonly models: {
-          readonly Post: {
+          readonly Product: {
             readonly fields: {
               readonly _id: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
               };
-              readonly authorId: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
-              };
-              readonly content: {
+              readonly ageGroup: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
               };
-              readonly title: {
+              readonly category: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
               };
+              readonly condition: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/date@1' };
+              };
+              readonly currency: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly description: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly imageUrl: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly isActive: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/bool@1' };
+              };
+              readonly name: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly priceCents: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/int32@1' };
+              };
+              readonly sellerId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
+              };
+              readonly stock: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/int32@1' };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/date@1' };
+              };
             };
             readonly relations: {
-              readonly author: {
+              readonly seller: {
                 readonly to: {
                   readonly namespace: '__unbound__' & NamespaceId;
                   readonly model: 'User';
@@ -185,12 +393,12 @@ type ContractBase = Omit<
                 readonly cardinality: 'N:1';
                 readonly nullable: false;
                 readonly on: {
-                  readonly localFields: readonly ['authorId'];
+                  readonly localFields: readonly ['sellerId'];
                   readonly targetFields: readonly ['_id'];
                 };
               };
             };
-            readonly storage: { readonly collection: 'posts' };
+            readonly storage: { readonly collection: 'products' };
           };
           readonly User: {
             readonly fields: {
@@ -198,34 +406,153 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
               };
+              readonly city: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/date@1' };
+              };
+              readonly district: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
               readonly email: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
               };
-              readonly name: {
+              readonly firstName: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly lastName: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly password: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly phone: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
               };
-              readonly username: {
+              readonly profilePicture: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly role: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/date@1' };
               };
             };
             readonly relations: {
-              readonly posts: {
+              readonly products: {
                 readonly to: {
                   readonly namespace: '__unbound__' & NamespaceId;
-                  readonly model: 'Post';
+                  readonly model: 'Product';
                 };
                 readonly cardinality: '1:N';
                 readonly on: {
                   readonly localFields: readonly ['_id'];
-                  readonly targetFields: readonly ['authorId'];
+                  readonly targetFields: readonly ['sellerId'];
                 };
               };
             };
             readonly storage: { readonly collection: 'users' };
           };
+        };
+        readonly enum: {
+          readonly AgeGroup: {
+            readonly codecId: 'mongo/string@1';
+            readonly members: readonly [
+              { readonly name: 'NEWBORN'; readonly value: 'NEWBORN' },
+              { readonly name: 'BABY_3_12M'; readonly value: 'BABY_3_12M' },
+              { readonly name: 'TODDLER_1_3Y'; readonly value: 'TODDLER_1_3Y' },
+              { readonly name: 'KIDS_3_6Y'; readonly value: 'KIDS_3_6Y' },
+              { readonly name: 'KIDS_6_12Y'; readonly value: 'KIDS_6_12Y' },
+              { readonly name: 'MATERNITY'; readonly value: 'MATERNITY' },
+            ];
+          };
+          readonly Category: {
+            readonly codecId: 'mongo/string@1';
+            readonly members: readonly [
+              { readonly name: 'STROLLERS_AND_CARRIERS'; readonly value: 'STROLLERS_AND_CARRIERS' },
+              { readonly name: 'CLOTHING_AND_SHOES'; readonly value: 'CLOTHING_AND_SHOES' },
+              { readonly name: 'NURSERY_AND_FURNITURE'; readonly value: 'NURSERY_AND_FURNITURE' },
+              { readonly name: 'FEEDING_AND_CARE'; readonly value: 'FEEDING_AND_CARE' },
+              { readonly name: 'TOYS_AND_BOOKS'; readonly value: 'TOYS_AND_BOOKS' },
+              { readonly name: 'MATERNITY_AND_MOM'; readonly value: 'MATERNITY_AND_MOM' },
+              { readonly name: 'OTHER'; readonly value: 'OTHER' },
+            ];
+          };
+          readonly Currency: {
+            readonly codecId: 'mongo/string@1';
+            readonly members: readonly [
+              { readonly name: 'EUR'; readonly value: 'EUR' },
+              { readonly name: 'USD'; readonly value: 'USD' },
+              { readonly name: 'GBP'; readonly value: 'GBP' },
+              { readonly name: 'TRY'; readonly value: 'TRY' },
+            ];
+          };
+          readonly ProductCondition: {
+            readonly codecId: 'mongo/string@1';
+            readonly members: readonly [
+              { readonly name: 'NEW_WITH_TAG'; readonly value: 'NEW_WITH_TAG' },
+              { readonly name: 'NEW_WITHOUT_TAG'; readonly value: 'NEW_WITHOUT_TAG' },
+              { readonly name: 'LIKE_NEW'; readonly value: 'LIKE_NEW' },
+              { readonly name: 'USED_GOOD'; readonly value: 'USED_GOOD' },
+              { readonly name: 'USED_FAIR'; readonly value: 'USED_FAIR' },
+            ];
+          };
+          readonly Role: {
+            readonly codecId: 'mongo/string@1';
+            readonly members: readonly [
+              { readonly name: 'USER'; readonly value: 'USER' },
+              { readonly name: 'ADMIN'; readonly value: 'ADMIN' },
+            ];
+          };
+        };
+        readonly enumMemberTypes?: {
+          readonly AgeGroup: readonly [
+            { readonly name: 'NEWBORN'; readonly value: 'NEWBORN' },
+            { readonly name: 'BABY_3_12M'; readonly value: 'BABY_3_12M' },
+            { readonly name: 'TODDLER_1_3Y'; readonly value: 'TODDLER_1_3Y' },
+            { readonly name: 'KIDS_3_6Y'; readonly value: 'KIDS_3_6Y' },
+            { readonly name: 'KIDS_6_12Y'; readonly value: 'KIDS_6_12Y' },
+            { readonly name: 'MATERNITY'; readonly value: 'MATERNITY' },
+          ];
+          readonly Category: readonly [
+            { readonly name: 'STROLLERS_AND_CARRIERS'; readonly value: 'STROLLERS_AND_CARRIERS' },
+            { readonly name: 'CLOTHING_AND_SHOES'; readonly value: 'CLOTHING_AND_SHOES' },
+            { readonly name: 'NURSERY_AND_FURNITURE'; readonly value: 'NURSERY_AND_FURNITURE' },
+            { readonly name: 'FEEDING_AND_CARE'; readonly value: 'FEEDING_AND_CARE' },
+            { readonly name: 'TOYS_AND_BOOKS'; readonly value: 'TOYS_AND_BOOKS' },
+            { readonly name: 'MATERNITY_AND_MOM'; readonly value: 'MATERNITY_AND_MOM' },
+            { readonly name: 'OTHER'; readonly value: 'OTHER' },
+          ];
+          readonly Currency: readonly [
+            { readonly name: 'EUR'; readonly value: 'EUR' },
+            { readonly name: 'USD'; readonly value: 'USD' },
+            { readonly name: 'GBP'; readonly value: 'GBP' },
+            { readonly name: 'TRY'; readonly value: 'TRY' },
+          ];
+          readonly ProductCondition: readonly [
+            { readonly name: 'NEW_WITH_TAG'; readonly value: 'NEW_WITH_TAG' },
+            { readonly name: 'NEW_WITHOUT_TAG'; readonly value: 'NEW_WITHOUT_TAG' },
+            { readonly name: 'LIKE_NEW'; readonly value: 'LIKE_NEW' },
+            { readonly name: 'USED_GOOD'; readonly value: 'USED_GOOD' },
+            { readonly name: 'USED_FAIR'; readonly value: 'USED_FAIR' },
+          ];
+          readonly Role: readonly [
+            { readonly name: 'USER'; readonly value: 'USER' },
+            { readonly name: 'ADMIN'; readonly value: 'ADMIN' },
+          ];
         };
       };
     };
