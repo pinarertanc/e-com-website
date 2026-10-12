@@ -87,12 +87,12 @@
                 "value": "EUR"
               },
               {
-                "name": "USD",
-                "value": "USD"
-              },
-              {
                 "name": "GBP",
                 "value": "GBP"
+              },
+              {
+                "name": "USD",
+                "value": "USD"
               },
               {
                 "name": "TRY",
@@ -104,24 +104,16 @@
             "codecId": "mongo/string@1",
             "members": [
               {
-                "name": "NEW_WITH_TAG",
-                "value": "NEW_WITH_TAG"
-              },
-              {
-                "name": "NEW_WITHOUT_TAG",
-                "value": "NEW_WITHOUT_TAG"
+                "name": "NEW",
+                "value": "NEW"
               },
               {
                 "name": "LIKE_NEW",
                 "value": "LIKE_NEW"
               },
               {
-                "name": "USED_GOOD",
-                "value": "USED_GOOD"
-              },
-              {
-                "name": "USED_FAIR",
-                "value": "USED_FAIR"
+                "name": "USED",
+                "value": "USED"
               }
             ]
           },
@@ -215,7 +207,10 @@
                   "kind": "scalar"
                 }
               },
-              "imageUrl": {
+              "imageUrls": {
+                "many": {
+                  "elementNullable": false
+                },
                 "nullable": false,
                 "type": {
                   "codecId": "mongo/string@1",
@@ -352,7 +347,7 @@
                   "kind": "scalar"
                 }
               },
-              "profilePicture": {
+              "profilePictureUrl": {
                 "nullable": true,
                 "type": {
                   "codecId": "mongo/string@1",
@@ -462,11 +457,9 @@
                     "condition": {
                       "bsonType": "string",
                       "enum": [
-                        "NEW_WITH_TAG",
-                        "NEW_WITHOUT_TAG",
+                        "NEW",
                         "LIKE_NEW",
-                        "USED_GOOD",
-                        "USED_FAIR"
+                        "USED"
                       ]
                     },
                     "createdAt": {
@@ -476,16 +469,19 @@
                       "bsonType": "string",
                       "enum": [
                         "EUR",
-                        "USD",
                         "GBP",
+                        "USD",
                         "TRY"
                       ]
                     },
                     "description": {
                       "bsonType": "string"
                     },
-                    "imageUrl": {
-                      "bsonType": "string"
+                    "imageUrls": {
+                      "bsonType": "array",
+                      "items": {
+                        "bsonType": "string"
+                      }
                     },
                     "isActive": {
                       "bsonType": "bool"
@@ -513,7 +509,7 @@
                     "createdAt",
                     "currency",
                     "description",
-                    "imageUrl",
+                    "imageUrls",
                     "isActive",
                     "name",
                     "priceCents",
@@ -582,7 +578,7 @@
                         "string"
                       ]
                     },
-                    "profilePicture": {
+                    "profilePictureUrl": {
                       "bsonType": [
                         "null",
                         "string"
@@ -644,19 +640,17 @@
               "kind": "valueSet",
               "values": [
                 "EUR",
-                "USD",
                 "GBP",
+                "USD",
                 "TRY"
               ]
             },
             "ProductCondition": {
               "kind": "valueSet",
               "values": [
-                "NEW_WITH_TAG",
-                "NEW_WITHOUT_TAG",
+                "NEW",
                 "LIKE_NEW",
-                "USED_GOOD",
-                "USED_FAIR"
+                "USED"
               ]
             },
             "Role": {
@@ -672,7 +666,7 @@
         "kind": "mongo-database"
       }
     },
-    "storageHash": "f391b413f23bef4fc39c15aabc76ffc8b173e9331cfe7bef93ba49187138d14d"
+    "storageHash": "c2f62ee69e7bcf80e8a95270247bd296f643db45f5f8d6554a47694abeab3365"
   },
   "capabilities": {},
   "extensions": {},

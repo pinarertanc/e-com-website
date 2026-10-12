@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-mongo/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'f391b413f23bef4fc39c15aabc76ffc8b173e9331cfe7bef93ba49187138d14d'>;
+  StorageHashBase<'c2f62ee69e7bcf80e8a95270247bd296f643db45f5f8d6554a47694abeab3365'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'251b3ce23f6c9f561892e7c1af9d2cc941a13d64ba1aa7226b90036b09568cc3'>;
@@ -39,12 +39,11 @@ export type FieldOutputTypes = {
         | 'TOYS_AND_BOOKS'
         | 'MATERNITY_AND_MOM'
         | 'OTHER';
-      readonly condition:
-        'NEW_WITH_TAG' | 'NEW_WITHOUT_TAG' | 'LIKE_NEW' | 'USED_GOOD' | 'USED_FAIR';
+      readonly condition: 'NEW' | 'LIKE_NEW' | 'USED';
       readonly createdAt: CodecTypes['mongo/date@1']['output'];
-      readonly currency: 'EUR' | 'USD' | 'GBP' | 'TRY';
+      readonly currency: 'EUR' | 'GBP' | 'USD' | 'TRY';
       readonly description: CodecTypes['mongo/string@1']['output'];
-      readonly imageUrl: CodecTypes['mongo/string@1']['output'];
+      readonly imageUrls: ReadonlyArray<CodecTypes['mongo/string@1']['output']>;
       readonly isActive: CodecTypes['mongo/bool@1']['output'];
       readonly name: CodecTypes['mongo/string@1']['output'];
       readonly priceCents: CodecTypes['mongo/int32@1']['output'];
@@ -62,7 +61,7 @@ export type FieldOutputTypes = {
       readonly lastName: CodecTypes['mongo/string@1']['output'];
       readonly password: CodecTypes['mongo/string@1']['output'];
       readonly phone: CodecTypes['mongo/string@1']['output'] | null;
-      readonly profilePicture: CodecTypes['mongo/string@1']['output'] | null;
+      readonly profilePictureUrl: CodecTypes['mongo/string@1']['output'] | null;
       readonly role: 'USER' | 'ADMIN';
       readonly updatedAt: CodecTypes['mongo/date@1']['output'];
     };
@@ -82,12 +81,11 @@ export type FieldInputTypes = {
         | 'TOYS_AND_BOOKS'
         | 'MATERNITY_AND_MOM'
         | 'OTHER';
-      readonly condition:
-        'NEW_WITH_TAG' | 'NEW_WITHOUT_TAG' | 'LIKE_NEW' | 'USED_GOOD' | 'USED_FAIR';
+      readonly condition: 'NEW' | 'LIKE_NEW' | 'USED';
       readonly createdAt: CodecTypes['mongo/date@1']['input'];
-      readonly currency: 'EUR' | 'USD' | 'GBP' | 'TRY';
+      readonly currency: 'EUR' | 'GBP' | 'USD' | 'TRY';
       readonly description: CodecTypes['mongo/string@1']['input'];
-      readonly imageUrl: CodecTypes['mongo/string@1']['input'];
+      readonly imageUrls: ReadonlyArray<CodecTypes['mongo/string@1']['input']>;
       readonly isActive: CodecTypes['mongo/bool@1']['input'];
       readonly name: CodecTypes['mongo/string@1']['input'];
       readonly priceCents: CodecTypes['mongo/int32@1']['input'];
@@ -105,7 +103,7 @@ export type FieldInputTypes = {
       readonly lastName: CodecTypes['mongo/string@1']['input'];
       readonly password: CodecTypes['mongo/string@1']['input'];
       readonly phone: CodecTypes['mongo/string@1']['input'] | null;
-      readonly profilePicture: CodecTypes['mongo/string@1']['input'] | null;
+      readonly profilePictureUrl: CodecTypes['mongo/string@1']['input'] | null;
       readonly role: 'USER' | 'ADMIN';
       readonly updatedAt: CodecTypes['mongo/date@1']['input'];
     };
@@ -125,11 +123,11 @@ export namespace Models {
       | 'TOYS_AND_BOOKS'
       | 'MATERNITY_AND_MOM'
       | 'OTHER';
-    condition: 'NEW_WITH_TAG' | 'NEW_WITHOUT_TAG' | 'LIKE_NEW' | 'USED_GOOD' | 'USED_FAIR';
+    condition: 'NEW' | 'LIKE_NEW' | 'USED';
     createdAt: CodecTypes['mongo/date@1']['output'];
-    currency: 'EUR' | 'USD' | 'GBP' | 'TRY';
+    currency: 'EUR' | 'GBP' | 'USD' | 'TRY';
     description: CodecTypes['mongo/string@1']['output'];
-    imageUrl: CodecTypes['mongo/string@1']['output'];
+    imageUrls: ReadonlyArray<CodecTypes['mongo/string@1']['output']>;
     isActive: CodecTypes['mongo/bool@1']['output'];
     name: CodecTypes['mongo/string@1']['output'];
     priceCents: CodecTypes['mongo/int32@1']['output'];
@@ -149,7 +147,7 @@ export namespace Models {
     lastName: CodecTypes['mongo/string@1']['output'];
     password: CodecTypes['mongo/string@1']['output'];
     phone: CodecTypes['mongo/string@1']['output'] | null;
-    profilePicture: CodecTypes['mongo/string@1']['output'] | null;
+    profilePictureUrl: CodecTypes['mongo/string@1']['output'] | null;
     role: 'USER' | 'ADMIN';
     updatedAt: CodecTypes['mongo/date@1']['output'];
     products: unbound_Product[];
@@ -215,21 +213,18 @@ type ContractBase = Omit<
                     };
                     readonly condition: {
                       readonly bsonType: 'string';
-                      readonly enum: readonly [
-                        'NEW_WITH_TAG',
-                        'NEW_WITHOUT_TAG',
-                        'LIKE_NEW',
-                        'USED_GOOD',
-                        'USED_FAIR',
-                      ];
+                      readonly enum: readonly ['NEW', 'LIKE_NEW', 'USED'];
                     };
                     readonly createdAt: { readonly bsonType: 'date' };
                     readonly currency: {
                       readonly bsonType: 'string';
-                      readonly enum: readonly ['EUR', 'USD', 'GBP', 'TRY'];
+                      readonly enum: readonly ['EUR', 'GBP', 'USD', 'TRY'];
                     };
                     readonly description: { readonly bsonType: 'string' };
-                    readonly imageUrl: { readonly bsonType: 'string' };
+                    readonly imageUrls: {
+                      readonly bsonType: 'array';
+                      readonly items: { readonly bsonType: 'string' };
+                    };
                     readonly isActive: { readonly bsonType: 'bool' };
                     readonly name: { readonly bsonType: 'string' };
                     readonly priceCents: { readonly bsonType: 'int' };
@@ -244,7 +239,7 @@ type ContractBase = Omit<
                     'createdAt',
                     'currency',
                     'description',
-                    'imageUrl',
+                    'imageUrls',
                     'isActive',
                     'name',
                     'priceCents',
@@ -281,7 +276,7 @@ type ContractBase = Omit<
                     readonly lastName: { readonly bsonType: 'string' };
                     readonly password: { readonly bsonType: 'string' };
                     readonly phone: { readonly bsonType: readonly ['null', 'string'] };
-                    readonly profilePicture: { readonly bsonType: readonly ['null', 'string'] };
+                    readonly profilePictureUrl: { readonly bsonType: readonly ['null', 'string'] };
                     readonly role: {
                       readonly bsonType: 'string';
                       readonly enum: readonly ['USER', 'ADMIN'];
@@ -355,9 +350,10 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
               };
-              readonly imageUrl: {
+              readonly imageUrls: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+                readonly many: { readonly elementNullable: false };
               };
               readonly isActive: {
                 readonly nullable: false;
@@ -438,7 +434,7 @@ type ContractBase = Omit<
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
               };
-              readonly profilePicture: {
+              readonly profilePictureUrl: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
               };
@@ -495,19 +491,17 @@ type ContractBase = Omit<
             readonly codecId: 'mongo/string@1';
             readonly members: readonly [
               { readonly name: 'EUR'; readonly value: 'EUR' },
-              { readonly name: 'USD'; readonly value: 'USD' },
               { readonly name: 'GBP'; readonly value: 'GBP' },
+              { readonly name: 'USD'; readonly value: 'USD' },
               { readonly name: 'TRY'; readonly value: 'TRY' },
             ];
           };
           readonly ProductCondition: {
             readonly codecId: 'mongo/string@1';
             readonly members: readonly [
-              { readonly name: 'NEW_WITH_TAG'; readonly value: 'NEW_WITH_TAG' },
-              { readonly name: 'NEW_WITHOUT_TAG'; readonly value: 'NEW_WITHOUT_TAG' },
+              { readonly name: 'NEW'; readonly value: 'NEW' },
               { readonly name: 'LIKE_NEW'; readonly value: 'LIKE_NEW' },
-              { readonly name: 'USED_GOOD'; readonly value: 'USED_GOOD' },
-              { readonly name: 'USED_FAIR'; readonly value: 'USED_FAIR' },
+              { readonly name: 'USED'; readonly value: 'USED' },
             ];
           };
           readonly Role: {
@@ -538,16 +532,14 @@ type ContractBase = Omit<
           ];
           readonly Currency: readonly [
             { readonly name: 'EUR'; readonly value: 'EUR' },
-            { readonly name: 'USD'; readonly value: 'USD' },
             { readonly name: 'GBP'; readonly value: 'GBP' },
+            { readonly name: 'USD'; readonly value: 'USD' },
             { readonly name: 'TRY'; readonly value: 'TRY' },
           ];
           readonly ProductCondition: readonly [
-            { readonly name: 'NEW_WITH_TAG'; readonly value: 'NEW_WITH_TAG' },
-            { readonly name: 'NEW_WITHOUT_TAG'; readonly value: 'NEW_WITHOUT_TAG' },
+            { readonly name: 'NEW'; readonly value: 'NEW' },
             { readonly name: 'LIKE_NEW'; readonly value: 'LIKE_NEW' },
-            { readonly name: 'USED_GOOD'; readonly value: 'USED_GOOD' },
-            { readonly name: 'USED_FAIR'; readonly value: 'USED_FAIR' },
+            { readonly name: 'USED'; readonly value: 'USED' },
           ];
           readonly Role: readonly [
             { readonly name: 'USER'; readonly value: 'USER' },

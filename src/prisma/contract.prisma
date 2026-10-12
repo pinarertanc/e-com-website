@@ -9,7 +9,7 @@ model Product {
   currency    Currency
   stock       Int32
   ageGroup    AgeGroup?
-  imageUrl    String
+  imageUrls   String[]
   isActive    Bool
 
   sellerId    ObjectId
@@ -22,23 +22,23 @@ model Product {
 }
 
 model User {
-  id             ObjectId  @id @map("_id")
-  email          String    @unique
-  password       String
-  firstName      String
-  lastName       String
-  phone          String?
-  profilePicture String?
+  id                ObjectId  @id @map("_id")
+  email             String    @unique
+  password          String
+  firstName         String
+  lastName          String
+  phone             String?
+  profilePictureUrl String?
 
-  role           Role
+  role              Role
 
-  city           String?
-  district       String?
+  city              String?
+  district          String?
 
-  products       Product[] @relation("UserProducts")
+  products          Product[] @relation("UserProducts")
 
-  createdAt      Date
-  updatedAt      Date
+  createdAt         Date
+  updatedAt         Date
 
   @@map("users")
 }
@@ -50,8 +50,8 @@ enum Role {
 
 enum Currency {
   EUR
-  USD
   GBP
+  USD
   TRY
 }
 
@@ -66,11 +66,9 @@ enum Category {
 }
 
 enum ProductCondition {
-  NEW_WITH_TAG
-  NEW_WITHOUT_TAG
+  NEW
   LIKE_NEW
-  USED_GOOD
-  USED_FAIR
+  USED
 }
 
 enum AgeGroup {
