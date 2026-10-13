@@ -14,7 +14,7 @@ import {
 
 type DbProduct = FieldOutputTypes["__unbound__"]["Product"];
 
-export async function toAppProduct(product: DbProduct): Promise<Product> {
+export  function toAppProduct(product: DbProduct) {
   return {
     id: String(product._id),
     name: product.name,
