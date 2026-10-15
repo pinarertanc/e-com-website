@@ -27,7 +27,7 @@ import { LogOut, Settings, ShoppingBag, Tag, PlusCircle, ShoppingCart } from "lu
 import { SearchBar } from "@/components/SearchBar";
 import { MutedText, BodyText } from "./typography";
 
-export function TopNavigation() {
+export function UserTopNavigation() {
   const { user } = useUser();
   const hasSession = Boolean(user);
 

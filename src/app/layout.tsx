@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Figtree, Public_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { TopNavigation } from "@/components/TopNavigation";
+import { UserTopNavigation } from "@/components/UserTopNavigation";
 import { MobileBottomNav } from "@/components/MobileBottomNavBar";
 import { ThemeProvider } from "@/components/themeProvider";
+import { AdminNavbar } from "@/components/admin/admin-navbar";
+import { isAdmin, requireAdmin } from "@/lib/auth0";
 
 const publicSansHeading = Public_Sans({
   subsets: ["latin"],
@@ -61,7 +63,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const user = await requireAdmin();
+ 
   return (
     <html
       lang="en"
@@ -78,14 +82,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <ThemeProvider
-        attribute="class"
-  defaultTheme="system"
-  enableSystem
-  disableTransitionOnChange>
-          <TopNavigation />
-          {children}
-          <MobileBottomNav />
-        </ThemeProvider>
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
+      {isAdmin(user) ? <UserTopNavigation /> : <AdminNavbar />}
+      
+      {children}
+      
+      {!isAdmin(user) && <MobileBottomNav />}
+    </ThemeProvider>
       </body>
     </html>
   );

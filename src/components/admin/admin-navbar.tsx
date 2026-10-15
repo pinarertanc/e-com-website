@@ -13,7 +13,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { getAdmin, getSessionUser } from "@/lib/auth0";
 
-export async function Navbar() {
+export async function AdminNavbar() {
   const user = await getSessionUser();
   const admin = await getAdmin();
 

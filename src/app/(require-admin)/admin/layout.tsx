@@ -1,4 +1,4 @@
-import { AdminSidebar } from "@/components/layout/admin-sidebar";
+import { AdminSidebar } from "@/components/admin/admin-sidebar";
 import { requireAdmin } from "@/lib/auth0";
 import type { Metadata } from "next";
 
