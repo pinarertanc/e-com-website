@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandLogo } from "@/components/brandlogo";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -9,9 +10,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { getAdmin, getSessionUser } from "@/lib/auth0";
+import { buttonVariants } from "@/components/ui/button";
 
 export async function AdminNavbar() {
   const user = await getSessionUser();
@@ -27,12 +30,12 @@ export async function AdminNavbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
-      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
+      <div className="mx-auto flex flex h-14 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link
-          href="/"
+          href="/admin/products"
           className="text-sm font-semibold tracking-tight text-foreground"
         >
-          Ecommerce Store
+          <BrandLogo />
         </Link>
 
         <nav className="flex items-center gap-2">
@@ -47,12 +50,9 @@ export async function AdminNavbar() {
               <Separator orientation="vertical" className="hidden h-6 sm:block" />
 
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="gap-2 px-2"
-                  >
+                <DropdownMenuTrigger
+                className={buttonVariants({ variant: "ghost", size: "sm", className: "gap-2 px-2" })} >
+                  
                     <Avatar size="sm">
                       {user.picture ? (
                         <AvatarImage src={user.picture} alt={displayName} />
@@ -62,15 +62,17 @@ export async function AdminNavbar() {
                     <span className="hidden max-w-40 truncate sm:inline">
                       {displayName}
                     </span>
-                  </Button>
+          
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuGroup>
                   <DropdownMenuLabel className="font-normal">
                     <p className="text-sm font-medium">{displayName}</p>
                     {user.email ? (
                       <p className="text-xs text-muted-foreground">{user.email}</p>
                     ) : null}
                   </DropdownMenuLabel>
+                  </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link href="/profile">Profile</Link>

@@ -6,7 +6,8 @@ import { UserTopNavigation } from "@/components/UserTopNavigation";
 import { MobileBottomNav } from "@/components/MobileBottomNavBar";
 import { ThemeProvider } from "@/components/themeProvider";
 import { AdminNavbar } from "@/components/admin/admin-navbar";
-import { isAdmin, requireAdmin } from "@/lib/auth0";
+import { requireAdmin } from "@/lib/auth0";
+import { AdminSidebar } from "@/components/admin/admin-sidebar";
 
 const publicSansHeading = Public_Sans({
   subsets: ["latin"],
@@ -64,7 +65,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const user = await requireAdmin();
+  
  
   return (
     <html
@@ -87,11 +88,15 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       enableSystem
       disableTransitionOnChange
     >
-      {isAdmin(user) ? <UserTopNavigation /> : <AdminNavbar />}
+      {await requireAdmin()?
+      <>
+       <AdminNavbar />
+       </>
+      : <UserTopNavigation />  }
       
       {children}
       
-      {!isAdmin(user) && <MobileBottomNav />}
+      {!requireAdmin() && <MobileBottomNav />}
     </ThemeProvider>
       </body>
     </html>

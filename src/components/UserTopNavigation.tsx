@@ -26,6 +26,7 @@ import { LogOut, Settings, ShoppingBag, Tag, PlusCircle, ShoppingCart } from "lu
 
 import { SearchBar } from "@/components/SearchBar";
 import { MutedText, BodyText } from "./typography";
+import { BrandLogo } from "./brandlogo";
 
 export function UserTopNavigation() {
   const { user } = useUser();
@@ -43,16 +44,7 @@ export function UserTopNavigation() {
         
         <div className="shrink-0 flex items-center">
           <Link href="/" className="flex items-center group py-1">
-            <Image
-              src="/logo.png"
-              alt="Hurç Logo"
-              width={260}
-              height={90}
-              priority
-              unoptimized
-              style={{ width: "auto" }}
-              className="!h-10 sm:!h-14 md:!h-16 lg:!h-20 max-w-none object-contain group-hover:scale-105 transition-transform"
-            />
+            <BrandLogo />
           </Link>
         </div>
 
