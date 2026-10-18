@@ -6,12 +6,13 @@ import {
   MAX_IMAGE_BYTES,
   MAX_IMAGE_MB,
 } from "@/lib/product-images";
-import { ProductCategory } from "@/types/product";
+import { ProductCategory, ProductCondition } from "@/types/product";
 import { priceStringToCents } from "@/types/currency";
 
 const PRICE_PATTERN = /^\d+(\.\d{1,2})?$/;
 
 export const productCategorySchema = z.enum(ProductCategory);
+export const productConditionSchema = z.enum(ProductCondition);
 
 export const createProductFormSchema = z.object({
   name: z.string().trim().min(1, "Name is required"),
@@ -31,7 +32,9 @@ export const createProductFormSchema = z.object({
     .refine((value) => /^\d+$/.test(value), "Stock must be a whole number")
     .refine((value) => Number(value) >= 0, "Stock cannot be negative"),
   isActive: z.boolean(),
-});
+  condition: productConditionSchema,
+  });
+
 
 export type CreateProductFormInput = z.infer<typeof createProductFormSchema>;
 
@@ -46,6 +49,7 @@ export const createProductDataSchema = createProductFormSchema.transform(
     category: values.category,
     stock: Number(values.stock),
     isActive: values.isActive,
+    condition: values.condition,
   }),
 );
 

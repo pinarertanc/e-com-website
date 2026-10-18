@@ -41,12 +41,30 @@ export type GetStorefrontProductsFilters = {
 export async function getStorefrontProducts(
   _filters: GetStorefrontProductsFilters = {},
 ): Promise<Product[]> {
-  const products = await db.orm.products.all();
-  return products.map(toAppProduct);
+  try {
+    const products = await db.orm.products.all();
+    
+    return products
+      .map(toAppProduct)
+      .filter((product) => {
+        if (!product.isActive) return false;
+        return true;
+      });
+  } catch (error) {
+    console.error("getStorefrontProducts Hatası:", error);
+    return [];
+  }
 }
 
 export async function getAllProducts(): Promise<Product[]> {
-  return [];
+
+  try{
+    const products = await db.orm.products.all()
+    return products.map(toAppProduct);
+  }catch(error){
+    console.error("getAllProducts Hatası:", error);
+      return [];
+  }
 }
 
 export async function getProductById(_id: string): Promise<Product | null> {

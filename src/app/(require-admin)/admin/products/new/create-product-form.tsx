@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { ACCEPTED_IMAGE_ACCEPT_ATTR, MAX_IMAGE_MB } from "@/lib/product-images";
 import { Currency, EU_CURRENCY_OPTIONS } from "@/types/currency";
-import { PRODUCT_CATEGORY_OPTIONS, ProductCategory } from "@/types/product";
+import { PRODUCT_CATEGORY_OPTIONS, ProductCategory, ProductCondition, CONDITION_OPTIONS } from "@/types/product";
 import { createProduct, CreateProductFieldErrors, CreateProductFormValues, CreateProductState } from "./action";
 
 const initialValues: CreateProductFormValues = {
@@ -21,6 +21,7 @@ const initialValues: CreateProductFormValues = {
   category: ProductCategory.OTHER,
   stock: "0",
   isActive: true,
+  condition: ProductCondition.NEW,
 };
 
 function fieldError(
@@ -71,7 +72,7 @@ export function CreateProductForm() {
       key={formKey}
       action={formAction}
       className="space-y-8"
-      encType="multipart/form-data"
+      
     >
       {state && !state.success ? (
         <div
@@ -144,6 +145,42 @@ export function CreateProductForm() {
               ))}
             </select>
           </FormField>
+
+
+
+
+          <FormField
+            id="condition"
+            label="Condition"
+            error={fieldError(fieldErrors, "condition")}
+            className="sm:col-span-1"
+          >
+            
+            <div className="flex flex-wrap gap-4 pt-2">
+
+              {CONDITION_OPTIONS.map((option)=> (
+                <Label
+                key={option.value}
+                className="flex items-center gap-2 cursor-pointer text-sm font-medium"
+                >
+                  <Input
+                  type="radio"
+                  name="condition"
+                  value={option.value}
+                  defaultChecked={values.condition ? values.condition === option.value : option.value === ProductCondition.NEW}
+                  required
+                  className="h-4 w-4 text-primary focus:ring-primary border-primary accent-primary"
+                  >
+                  </Input>
+                   {option.label}
+                </Label>
+              ))}
+            </div>
+          </FormField>
+
+
+
+
         </div>
       </section>
 

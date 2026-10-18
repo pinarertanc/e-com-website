@@ -241,7 +241,7 @@
               "sellerId": {
                 "nullable": false,
                 "type": {
-                  "codecId": "mongo/objectId@1",
+                  "codecId": "mongo/string@1",
                   "kind": "scalar"
                 }
               },
@@ -493,7 +493,7 @@
                       "bsonType": "int"
                     },
                     "sellerId": {
-                      "bsonType": "objectId"
+                      "bsonType": "string"
                     },
                     "stock": {
                       "bsonType": "int"
@@ -666,7 +666,7 @@
         "kind": "mongo-database"
       }
     },
-    "storageHash": "c2f62ee69e7bcf80e8a95270247bd296f643db45f5f8d6554a47694abeab3365"
+    "storageHash": "496555c5952d9e4b45757fd4042ed5cedecac46cb182022fd2f119c8a2f076ef"
   },
   "capabilities": {},
   "extensions": {},

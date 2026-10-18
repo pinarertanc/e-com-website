@@ -1,12 +1,13 @@
 'use server';
 
+import { requireUser } from '@/lib/auth0';
 import { addProduct } from '@/lib/products';
 import {
   createProductFormSchema,
   createProductImagesSchema,
 } from '@/lib/validation';
 import { Currency } from '@/types/currency';
-import { ProductCategory } from '@/types/product';
+import { ProductCategory, ProductCondition } from '@/types/product';
 import { put } from '@vercel/blob';
 
 export type CreateProductFormValues = {
@@ -17,6 +18,7 @@ export type CreateProductFormValues = {
   category: ProductCategory;
   stock: string;
   isActive: boolean;
+  condition: ProductCondition;
 };
 
 export type CreateProductFieldErrors = Partial<
@@ -41,6 +43,7 @@ function parseFormValues(formData: FormData): CreateProductFormValues {
     category: String(formData.get('category') ?? '') as ProductCategory,
     stock: String(formData.get('stock') ?? ''),
     isActive: formData.get('isActive') === 'on',
+    condition: String(formData.get('condition') ?? '') as ProductCondition,
   };
 }
 
@@ -59,8 +62,9 @@ export async function createProduct(
   _prevState: CreateProductState | null,
   formData: FormData,
 ): Promise<CreateProductState> {
-  const values = parseFormValues(formData);
 
+  const values = parseFormValues(formData);
+ 
   const parsed = createProductFormSchema.safeParse(values);
   if (!parsed.success) {
     return {
@@ -86,44 +90,69 @@ export async function createProduct(
     };
   }
 
-  const imageUrls = await Promise.all(
-    images.map(async (image) => {
-      const blob =  await put(image.name, image, {
-        access: 'public',
-        addRandomSuffix: true,
-      });
-
-      return blob.url;
-    }),
-  );
+  let imageUrls: string[] = [];
+  try {
+    imageUrls = await Promise.all(
+      images.map(async (image) => {
+        const blob = await put(image.name, image, {
+          access: 'public',
+          addRandomSuffix: true,
+        });
+        return blob.url;
+      }),
+    );
+  } catch (err) {
+    console.error('Vercel Blob Yükleme Hatası:', err);
+    return {
+      success: false,
+      message: 'Resimler yüklenirken bir sorun oluştu.',
+      values,
+    };
+  }
 
   if (!(imageUrls?.length > 0)) {
     return {
       success: false,
-      message: 'Failed saving product to database, please try again',
+      message: 'Lütfen en az bir resim yükleyin.',
       values,
     };
   }
 
+  const user = await requireUser();
+  const sellerId = typeof user?.id === "string" ? user.id : String(user?.id ?? "");
 
+  try {
+    const createdProduct = await addProduct({
+      name: parsed.data.name,
+      description: parsed.data.description,
+      priceCents: Math.round(parseFloat(parsed.data.price) * 100),
+      currency: parsed.data.currency,
+      category: parsed.data.category,
+      stock: parseInt(parsed.data.stock, 10),
+      imageUrls: imageUrls,
+      isActive: parsed.data.isActive,
+      sellerId: sellerId,
+      condition: parsed.data.condition,
+    });
 
-  const createdProduct = await addProduct({
-    name: parsed.data.name,
-    description: parsed.data.description,
-    priceCents: parseInt(parsed.data.price),
-    currency: parsed.data.currency,
-    category: parsed.data.category,
-    stock: parseInt(parsed.data.stock),
-    imageUrls: imageUrls,
-    isActive: parsed.data.isActive,
-  });
+    if (!createdProduct) {
+      return {
+        success: false,
+        message: 'Failed saving product to database, please try again',
+        values,
+      };
+    }
 
-  if (!createdProduct) {
+    return {
+      success: true,
+      productId: createdProduct.id,
+    };
+  } catch (error) {
+    console.error('Veritabanı Kayıt Hatası:', error);
     return {
       success: false,
-      message: 'Failed saving product to database, please try again',
+      message: error instanceof Error ? error.message : 'Veritabanı bağlantı hatası oluştu.',
       values,
     };
   }
-  // TODO: Implement the logic to save product data to the database and upload images to Vercel Blob
 }

@@ -33,8 +33,7 @@ export enum ProductSort {
   PRICE_DESC = "price_desc",
 }
 
-
-export const CATEGORY_OPTIONS: { value: ProductCategory; label: string }[] = [
+export const PRODUCT_CATEGORY_OPTIONS: { value: ProductCategory; label: string }[] = [
   { value: ProductCategory.STROLLERS_AND_CARRIERS, label: "Bebek Arabası & Oto Koltuğu" },
   { value: ProductCategory.CLOTHING_AND_SHOES, label: "Giyim, Ayakkabı & Tulum" },
   { value: ProductCategory.NURSERY_AND_FURNITURE, label: "Bebek Odası & Beşik" },
@@ -46,7 +45,7 @@ export const CATEGORY_OPTIONS: { value: ProductCategory; label: string }[] = [
 
 export const CATEGORY_FILTER_OPTIONS: { value: ProductCategory | "all"; label: string }[] = [
   { value: "all", label: "Tüm Kategoriler" },
-  ...CATEGORY_OPTIONS,
+  ...PRODUCT_CATEGORY_OPTIONS,
 ];
 
 export const CONDITION_OPTIONS: { value: ProductCondition; label: string; description: string }[] = [
@@ -101,7 +100,7 @@ export function isProductSort(value: string): value is ProductSort {
 }
 
 export function formatCategoryLabel(category: ProductCategory): string {
-  const option = CATEGORY_OPTIONS.find((item) => item.value === category);
+  const option = PRODUCT_CATEGORY_OPTIONS.find((item) => item.value === category);
   return option?.label ?? category;
 }
 

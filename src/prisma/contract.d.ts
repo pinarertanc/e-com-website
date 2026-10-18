@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-mongo/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'c2f62ee69e7bcf80e8a95270247bd296f643db45f5f8d6554a47694abeab3365'>;
+  StorageHashBase<'496555c5952d9e4b45757fd4042ed5cedecac46cb182022fd2f119c8a2f076ef'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'251b3ce23f6c9f561892e7c1af9d2cc941a13d64ba1aa7226b90036b09568cc3'>;
@@ -47,7 +47,7 @@ export type FieldOutputTypes = {
       readonly isActive: CodecTypes['mongo/bool@1']['output'];
       readonly name: CodecTypes['mongo/string@1']['output'];
       readonly priceCents: CodecTypes['mongo/int32@1']['output'];
-      readonly sellerId: CodecTypes['mongo/objectId@1']['output'];
+      readonly sellerId: CodecTypes['mongo/string@1']['output'];
       readonly stock: CodecTypes['mongo/int32@1']['output'];
       readonly updatedAt: CodecTypes['mongo/date@1']['output'];
     };
@@ -89,7 +89,7 @@ export type FieldInputTypes = {
       readonly isActive: CodecTypes['mongo/bool@1']['input'];
       readonly name: CodecTypes['mongo/string@1']['input'];
       readonly priceCents: CodecTypes['mongo/int32@1']['input'];
-      readonly sellerId: CodecTypes['mongo/objectId@1']['input'];
+      readonly sellerId: CodecTypes['mongo/string@1']['input'];
       readonly stock: CodecTypes['mongo/int32@1']['input'];
       readonly updatedAt: CodecTypes['mongo/date@1']['input'];
     };
@@ -131,7 +131,7 @@ export namespace Models {
     isActive: CodecTypes['mongo/bool@1']['output'];
     name: CodecTypes['mongo/string@1']['output'];
     priceCents: CodecTypes['mongo/int32@1']['output'];
-    sellerId: CodecTypes['mongo/objectId@1']['output'];
+    sellerId: CodecTypes['mongo/string@1']['output'];
     stock: CodecTypes['mongo/int32@1']['output'];
     updatedAt: CodecTypes['mongo/date@1']['output'];
     seller: unbound_User;
@@ -228,7 +228,7 @@ type ContractBase = Omit<
                     readonly isActive: { readonly bsonType: 'bool' };
                     readonly name: { readonly bsonType: 'string' };
                     readonly priceCents: { readonly bsonType: 'int' };
-                    readonly sellerId: { readonly bsonType: 'objectId' };
+                    readonly sellerId: { readonly bsonType: 'string' };
                     readonly stock: { readonly bsonType: 'int' };
                     readonly updatedAt: { readonly bsonType: 'date' };
                   };
@@ -369,7 +369,7 @@ type ContractBase = Omit<
               };
               readonly sellerId: {
                 readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
               };
               readonly stock: {
                 readonly nullable: false;

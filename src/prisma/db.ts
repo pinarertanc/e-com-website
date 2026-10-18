@@ -1,18 +1,38 @@
+import 'dotenv/config';
 import mongo from '@prisma/orm-mongo/runtime';
+import { MongoClient } from 'mongodb';
 import type { Contract } from './contract.d';
 import contractJson from './contract.json' with { type: 'json' };
 
-// İhtiyaç duyulduğunda (ilk DB sorgusunda) çalışır
-export function getDb() {
-  const url = process.env.DATABASE_URL || process.env.NEXT_PUBLIC_DATABASE_URL;
-  if (!url) throw new Error("DATABASE_URL .env dosyasında bulunamadı!");
+let client: ReturnType<typeof mongo<Contract>> | null = null;
 
-  return mongo<Contract>({ contractJson, url });
+export function getDbInstance() {
+  if (!client) {
+    const rawUrl = process.env.DATABASE_URL || '';
+    const cleanUrl = rawUrl.replace(/["'\r\n]/g, '').trim();
+
+    if (!cleanUrl) {
+      throw new Error("DATABASE_URL bulunamadı!");
+    }
+
+    // 🟢 Standard MongoClient nesnesini oluşturuyoruz
+    const nativeMongoClient = new MongoClient(cleanUrl);
+
+    // 🟢 mongo() fonksiyonuna url yerine mongoClient ve dbName veriyoruz
+    // Böylece validateMongoUrl kontrolü tamamen bypass ediliyor
+    client = mongo<Contract>({
+      contractJson,
+      mongoClient: nativeMongoClient,
+      dbName: 'ecom',
+    });
+  }
+
+  return client;
 }
 
-// Projede 'db.user.findMany()' şeklinde rahatça kullanmak için Proxy
 export const db = new Proxy({} as ReturnType<typeof mongo<Contract>>, {
   get(_target, prop) {
-    return (getDb() as any)[prop];
+    const instance = getDbInstance();
+    return (instance as any)[prop];
   },
 });

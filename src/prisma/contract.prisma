@@ -12,7 +12,7 @@ model Product {
   imageUrls   String[]
   isActive    Bool
 
-  sellerId    ObjectId
+  sellerId    String
   seller      User             @relation("UserProducts", fields: [sellerId], references: [id])
 
   createdAt   Date
