@@ -33,6 +33,8 @@ export enum ProductSort {
   PRICE_DESC = "price_desc",
 }
 
+
+
 export const PRODUCT_CATEGORY_OPTIONS: { value: ProductCategory; label: string }[] = [
   { value: ProductCategory.STROLLERS_AND_CARRIERS, label: "Bebek Arabası & Oto Koltuğu" },
   { value: ProductCategory.CLOTHING_AND_SHOES, label: "Giyim, Ayakkabı & Tulum" },

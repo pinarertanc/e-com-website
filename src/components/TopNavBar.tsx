@@ -1,8 +1,6 @@
-'use client';
 
 import Link from "next/link";
-import Image from "next/image";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { getSessionUser } from "@/lib/auth0";
 import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
@@ -28,9 +26,9 @@ import { SearchBar } from "@/components/SearchBar";
 import { MutedText, BodyText } from "./typography";
 import { BrandLogo } from "./brandlogo";
 
-export function UserTopNavigation() {
-  const { user } = useUser();
-  const hasSession = Boolean(user);
+export async function TopNavBar() {
+  const user = await getSessionUser();
+ 
 
   const userInitials = user?.name
     ? user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
@@ -66,7 +64,7 @@ export function UserTopNavigation() {
             )}
           </Link>
 
-          {hasSession ? (
+          {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-2 outline-none rounded-full p-0.5 hover:ring-2 hover:ring-ring transition-all cursor-pointer">
                 <Avatar className="w-10 h-10 border border-border">

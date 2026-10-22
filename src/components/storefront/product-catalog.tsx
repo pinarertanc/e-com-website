@@ -7,8 +7,8 @@ type ProductCatalogProps = {
   searchParams: Record<string, string | string[] | undefined>;
 };
 
-export function ProductCatalog({ searchParams }: ProductCatalogProps) {
-  const { categoryValue, sortValue } = parseStorefrontFilters(searchParams);
+export async function ProductCatalog({ searchParams }: ProductCatalogProps) {
+  const { categoryValue, sortValue } = await parseStorefrontFilters(searchParams);
 
   return (
     <div className="space-y-6">

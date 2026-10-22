@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 import {
   isProductSort,
-  PRODUCT_CATEGORY_FILTER_OPTIONS,
+  CATEGORY_FILTER_OPTIONS,
   PRODUCT_SORT_OPTIONS,
   type ProductCategory,
   type ProductSort,
@@ -44,7 +44,7 @@ export function ProductFilters({ category, sort }: ProductFiltersProps) {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
       <Select
-        value={category}
+        value={category as string}
         onValueChange={(value) =>
           updateFilters({ category: value as ProductCategory | "all" })
         }
@@ -53,7 +53,7 @@ export function ProductFilters({ category, sort }: ProductFiltersProps) {
           <SelectValue placeholder="Category" />
         </SelectTrigger>
         <SelectContent>
-          {PRODUCT_CATEGORY_FILTER_OPTIONS.map(({ value, label }) => (
+          {CATEGORY_FILTER_OPTIONS.map(({ value, label }) => (
             <SelectItem key={value} value={value}>
               {label}
             </SelectItem>
@@ -62,10 +62,10 @@ export function ProductFilters({ category, sort }: ProductFiltersProps) {
       </Select>
 
       <Select
-        value={sort}
+        value={sort ?? ""}
         onValueChange={(value) => {
-          if (isProductSort(value)) {
-            updateFilters({ sort: value });
+          if (isProductSort(value ?? "")) {
+            updateFilters({ sort: value as ProductSort});
           }
         }}
       >

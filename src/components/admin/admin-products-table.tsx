@@ -58,6 +58,7 @@ export async function AdminProductsTable() {
                       fill
                       className="object-cover"
                       sizes="40px"
+                      loading="eager"
                     />
                   ) : null}
                 </div>
