@@ -82,9 +82,6 @@ export async function requireUser(): Promise<Auth0SessionUser> {
 export async function requireAdmin(): Promise<Auth0SessionUser> {
   const user = await requireUser();
   
-  console.log("LOGGED IN USER ROLES:", user[ROLES_CLAIM]); // 🟢 Terminalde rolleri gör!
-  console.log("IS ADMIN CHECK:", isAdmin(user));
-
   if (!isAdmin(user)) redirect("/forbidden");
   return user;
 }

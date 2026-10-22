@@ -22,8 +22,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { LogOut, Settings, ShoppingBag, Tag, PlusCircle, ShoppingCart } from "lucide-react";
 
-import { SearchBar } from "@/components/SearchBar";
-import { MutedText, BodyText } from "./typography";
+import { SearchBar } from "@/components/storefront/SearchBar";
+import { MutedText, BodyText } from "../typography";
 import { BrandLogo } from "./brandlogo";
 
 export async function TopNavBar() {

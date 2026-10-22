@@ -38,6 +38,8 @@ export const createProductFormSchema = z.object({
 
 export type CreateProductFormInput = z.infer<typeof createProductFormSchema>;
 
+
+
 // createProductFormSchema keeps price/stock as strings so we can re-show the user's input on errors.
 // createProductDataSchema runs the same validation, then converts to DB types (priceCents, numeric stock).
 export const createProductDataSchema = createProductFormSchema.transform(
@@ -54,6 +56,28 @@ export const createProductDataSchema = createProductFormSchema.transform(
 );
 
 export type CreateProductData = z.infer<typeof createProductDataSchema>;
+
+export const UpdateProductFromSchema = createProductFormSchema;
+export type UpdateProductFormInput =z.infer<typeof UpdateProductFromSchema>;
+
+export const updateProductDataSchema = UpdateProductFromSchema.transform(
+  (values)=> ({
+    name:values.name,
+    description: values.description,
+    priceCents:priceStringToCents(values.price),
+    cuurency:values.currency,
+    category:values.category,
+    stock:Number(values.stock),
+    isActive:values.isActive,
+    condition:values.condition,
+
+  })
+)
+
+export type UpdateProductData = z.infer<typeof updateProductDataSchema>;
+
+
+
 
 // Image uploads come from <input type="file"> as File objects in FormData — not strings.
 // productImageFileSchema checks one file; createProductImagesSchema wraps it in an array

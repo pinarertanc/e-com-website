@@ -15,11 +15,10 @@ export function getDbInstance() {
       throw new Error("DATABASE_URL bulunamadı!");
     }
 
-    // 🟢 Standard MongoClient nesnesini oluşturuyoruz
+    
     const nativeMongoClient = new MongoClient(cleanUrl);
 
-    // 🟢 mongo() fonksiyonuna url yerine mongoClient ve dbName veriyoruz
-    // Böylece validateMongoUrl kontrolü tamamen bypass ediliyor
+   
     client = mongo<Contract>({
       contractJson,
       mongoClient: nativeMongoClient,

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { TopNavBar } from "@/components/TopNavBar";
-import { MobileBottomNav } from "@/components/MobileBottomNavBar";
+import { TopNavBar } from "@/components/storefront/TopNavBar";
+import { MobileBottomNav } from "@/components/storefront/MobileBottomNavBar";
 
 
 export const metadata: Metadata = {
