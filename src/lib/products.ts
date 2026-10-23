@@ -67,9 +67,20 @@ export async function getAllProducts(): Promise<Product[]> {
   }
 }
 
-export async function getProductById(_id: string): Promise<Product | null> {
-  return null;
-}
+export async function getProductById(_id: string): Promise<Product[]> {
+  try{
+    const products = await db.orm.products.all()
+    return products.map(toAppProduct)
+    .filter((product)=>{
+      if(_id === product.id) return true;
+      return false;
+    });
+    }catch(error){
+      console.error("getProductById Hatası:", error);
+      return[];
+    }
+  }
+
 
 export async function parseStorefrontFilters(
   searchParams: Record<string, string | string[] | undefined>,
@@ -101,3 +112,6 @@ export async function addProduct(
   })
   return toAppProduct(createdProduct);
 }
+
+
+
