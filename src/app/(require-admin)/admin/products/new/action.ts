@@ -7,7 +7,7 @@ import {
   createProductImagesSchema,
 } from '@/lib/validation';
 import { Currency } from '@/types/currency';
-import { ProductCategory, ProductCondition } from '@/types/product';
+import { AgeGroup, ProductCategory, ProductCondition } from '@/types/product';
 import { put } from '@vercel/blob';
 
 export type CreateProductFormValues = {
@@ -19,6 +19,7 @@ export type CreateProductFormValues = {
   stock: string;
   isActive: boolean;
   condition: ProductCondition;
+  ageGroup: AgeGroup;
 };
 
 export type CreateProductFieldErrors = Partial<
@@ -44,6 +45,7 @@ function parseFormValues(formData: FormData): CreateProductFormValues {
     stock: String(formData.get('stock') ?? ''),
     isActive: formData.get('isActive') === 'on',
     condition: String(formData.get('condition') ?? '') as ProductCondition,
+    ageGroup: String(formData.get("ageGroup") ?? '') as AgeGroup,
   };
 }
 

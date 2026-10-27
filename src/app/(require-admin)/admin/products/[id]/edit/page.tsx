@@ -1,21 +1,12 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
-
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { getProductById } from "@/lib/products";
+import { EditProductForm } from "@/components/admin/admin-edit-product-form";
 
-type EditProductPageProps = {
+export default async function EditProductPage({
+  params,
+}: {
   params: Promise<{ id: string }>;
-};
-
-export default async function EditProductPage({ params }: EditProductPageProps) {
+}) {
   const { id } = await params;
   const product = await getProductById(id);
 
@@ -24,27 +15,9 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
   }
 
   return (
-    <main className="space-y-6 p-6">
-      <div className="space-y-1">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-          Edit product
-        </h1>
-        <p className="text-sm text-muted-foreground">{product.name}</p>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Coming soon</CardTitle>
-          <CardDescription>
-            The edit form will be implemented in a later lesson.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Button asChild variant="outline">
-            <Link href="/admin/products">Back to products</Link>
-          </Button>
-        </CardContent>
-      </Card>
-    </main>
+    <div className="max-w-2xl mx-auto p-6 space-y-6">
+      <h1 className="text-2xl font-bold">Edit Product</h1>
+      <EditProductForm product = {product}/>
+    </div>
   );
 }

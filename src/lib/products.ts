@@ -1,5 +1,4 @@
-'use server';
-
+import 'server-only';
 import { parseStorefrontFiltersFromSearchParams } from "@/lib/validation";
 import type { FieldOutputTypes } from "@/prisma/contract";
 import { db } from "@/prisma/db";
@@ -67,19 +66,18 @@ export async function getAllProducts(): Promise<Product[]> {
   }
 }
 
-export async function getProductById(_id: string): Promise<Product[]> {
-  try{
-    const products = await db.orm.products.all()
-    return products.map(toAppProduct)
-    .filter((product)=>{
-      if(_id === product.id) return true;
-      return false;
-    });
-    }catch(error){
-      console.error("getProductById Hatası:", error);
-      return[];
-    }
+export async function getProductById(_id:string){
+  
+    const foundProduct = await db.orm.products
+    .where({_id})
+    .first()
+    if (!foundProduct) {
+    return null;
   }
+  return toAppProduct(foundProduct);
+  }
+  
+  
 
 
 export async function parseStorefrontFilters(
@@ -112,6 +110,44 @@ export async function addProduct(
   })
   return toAppProduct(createdProduct);
 }
+
+export async function updateProduct(_id:string, product:Omit<Product, "id" | "createdAt" | "updatedAt">): Promise<Product | null>{
+  const now = new Date();
+  const updatedProduct = await db.orm.products
+  .where({_id})
+  .update({
+    name: product.name,
+    description: product.description,
+    priceCents: product.priceCents,
+    currency: product.currency,
+    category: product.category,
+    condition: product.condition,           
+    ageGroup: product.ageGroup,     
+    sellerId: product.sellerId,             
+    stock: product.stock,
+    imageUrls: product.imageUrls,
+    isActive: product.isActive,
+    updatedAt: now,
+  })
+  if(!updatedProduct){
+    return null;
+  }
+  return toAppProduct(updatedProduct);
+
+}
+
+
+export async function deleteProduct(_id:string): Promise<Product | null>{
+  const deletedProduct = await db.orm.products
+  .where({_id})
+  .delete()
+
+  if(!deletedProduct){
+    return null;
+  }
+  return toAppProduct(deletedProduct);
+}
+
 
 
 

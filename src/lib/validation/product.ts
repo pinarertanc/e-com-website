@@ -57,7 +57,10 @@ export const createProductDataSchema = createProductFormSchema.transform(
 
 export type CreateProductData = z.infer<typeof createProductDataSchema>;
 
+
+
 export const UpdateProductFromSchema = createProductFormSchema;
+
 export type UpdateProductFormInput =z.infer<typeof UpdateProductFromSchema>;
 
 export const updateProductDataSchema = UpdateProductFromSchema.transform(

@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table";
 import { getAllProducts } from "@/lib/products";
 import { Currency, formatPrice } from "@/types/currency";
-import { formatCategoryLabel, type ProductCategory } from "@/types/product";
+import { AgeGroup, formatCategoryLabel,formatAgeGroupLabel, type ProductCategory } from "@/types/product";
 
 export async function AdminProductsTable() {
   const products = await getAllProducts();
@@ -40,6 +40,7 @@ export async function AdminProductsTable() {
             <TableHead className="w-16">Image</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Category</TableHead>
+            <TableHead>Age Group</TableHead>
             <TableHead>Price</TableHead>
             <TableHead>Stock</TableHead>
             <TableHead>Status</TableHead>
@@ -66,6 +67,9 @@ export async function AdminProductsTable() {
               <TableCell className="font-medium">{product.name}</TableCell>
               <TableCell>
                 {formatCategoryLabel(product.category as ProductCategory)}
+              </TableCell>
+              <TableCell>
+                {formatAgeGroupLabel(product.ageGroup as AgeGroup)}
               </TableCell>
               <TableCell>
                 {formatPrice(product.priceCents, product.currency as Currency)}

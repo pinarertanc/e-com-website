@@ -125,10 +125,20 @@ export type Product = {
   priceCents: number;
   currency: Currency;
   stock: number;
-  ageGroup?: AgeGroup | null;
+  ageGroup?: AgeGroup | undefined;
   imageUrls: readonly string [];
   isActive: boolean;
   sellerId: string;
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type ProductActionState = {
+  error: string | null;
+  success?: boolean;
+  
+};
+
+export type EditProductFormProps = {
+  product : Product;
 };

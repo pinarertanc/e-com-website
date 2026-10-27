@@ -2,6 +2,7 @@
 
 import { useActionState, type ReactNode } from "react";
 import Link from "next/link";
+import { FormField } from "../formField";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,8 +11,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { ACCEPTED_IMAGE_ACCEPT_ATTR, MAX_IMAGE_MB } from "@/lib/product-images";
 import { Currency, EU_CURRENCY_OPTIONS } from "@/types/currency";
-import { PRODUCT_CATEGORY_OPTIONS, ProductCategory, ProductCondition, CONDITION_OPTIONS } from "@/types/product";
-import { createProduct, CreateProductFieldErrors, CreateProductFormValues, CreateProductState } from "./action";
+import { PRODUCT_CATEGORY_OPTIONS, ProductCategory, ProductCondition, CONDITION_OPTIONS, AGE_GROUP_OPTIONS, AgeGroup } from "@/types/product";
+import { createProduct, CreateProductFieldErrors, CreateProductFormValues, CreateProductState } from "../../app/(require-admin)/admin/products/new/action";
 
 const initialValues: CreateProductFormValues = {
   name: "",
@@ -22,6 +23,7 @@ const initialValues: CreateProductFormValues = {
   stock: "0",
   isActive: true,
   condition: ProductCondition.NEW,
+  ageGroup: AgeGroup.NEWBORN,
 };
 
 function fieldError(
@@ -146,8 +148,29 @@ export function CreateProductForm() {
             </select>
           </FormField>
 
-
-
+          <FormField
+            id="ageGroup"
+            label="Age Group"
+            error={fieldError(fieldErrors, "ageGroup")}
+          >
+            <select
+              id="ageGroup"
+              name="ageGroup"
+              defaultValue={values.ageGroup}
+              className={cn(
+                "h-9 w-full rounded-lg border border-input bg-input/30 px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
+                fieldError(fieldErrors, "ageGroup") && "border-destructive",
+              )}
+              required
+              aria-invalid={Boolean(fieldError(fieldErrors, "ageGroup"))}
+            >
+              {AGE_GROUP_OPTIONS.map(({ value, label }) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </FormField>
 
           <FormField
             id="condition"
@@ -313,28 +336,3 @@ export function CreateProductForm() {
   );
 }
 
-function FormField({
-  id,
-  label,
-  error,
-  className,
-  children,
-}: {
-  id: string;
-  label: string;
-  error?: string;
-  className?: string;
-  children: ReactNode;
-}) {
-  return (
-    <div className={cn("grid gap-2", className)}>
-      <Label htmlFor={id}>{label}</Label>
-      {children}
-      {error ? (
-        <p id={`${id}-error`} className="text-sm text-destructive">
-          {error}
-        </p>
-      ) : null}
-    </div>
-  );
-}

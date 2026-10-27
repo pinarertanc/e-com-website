@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { CreateProductForm } from "./create-product-form";
+import { CreateProductForm } from "../../../../../components/admin/admin-create-product-form";
 
 export const metadata: Metadata = {
   title: "Create product | Admin",
