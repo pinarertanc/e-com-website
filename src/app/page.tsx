@@ -1,11 +1,13 @@
-import { MutedText } from "@/components/typography";
+import { getSessionUser,isAdmin } from "@/lib/auth0";
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-background text-foreground min-h-screen font-sans">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-background sm:items-start">
-        <MutedText>Main page</MutedText>
-      </main>
-    </div>
-  );
+
+export default async function RootPage(){
+  const user = await getSessionUser();
+  if(user && isAdmin(user)){
+   redirect("/admin");
+  }
+
+  redirect("/home");
+
 }

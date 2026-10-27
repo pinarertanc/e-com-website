@@ -4,8 +4,11 @@ import { useActionState } from "react";
 import { updateProfileAction } from "@/app/(require-user)/user/settings/action";
 import { ProfileFormProps } from "@/types/user";
 import { actionResponse } from "@/types/form";
-import { MutedText } from "./typography";
+import { MutedText } from "../typography";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 
 const initialState: actionResponse = {
   success: false,
@@ -21,10 +24,10 @@ export function ProfileForm({ user }: ProfileFormProps) {
     <form action={formAction} className="space-y-4 w-full max-w-md bg-card text-card-foreground p-6 rounded-xl border border-border shadow-sm">
 
       <div>
-        <label htmlFor="phone" className="block text-xs font-semibold text-foreground mb-1">
+        <Label htmlFor="phone" className="block text-xs font-semibold text-foreground mb-1">
           Telefon
-        </label>
-        <input
+        </Label>
+        <Input
           id="phone"
           name="phone"
           type="tel"
@@ -41,10 +44,10 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label htmlFor="city" className="block text-xs font-semibold text-foreground mb-1">
-            Şehir
-          </label>
-          <input
+          <Label htmlFor="city" className="block text-xs font-semibold text-foreground mb-1">
+            İl
+          </Label>
+          <Input
             id="city"
             name="city"
             type="text"
@@ -60,10 +63,10 @@ export function ProfileForm({ user }: ProfileFormProps) {
         </div>
 
         <div>
-          <label htmlFor="district" className="block text-xs font-semibold text-foreground mb-1">
+          <Label htmlFor="district" className="block text-xs font-semibold text-foreground mb-1">
             İlçe
-          </label>
-          <input
+          </Label>
+          <Input
             id="district"
             name="district"
             type="text"
@@ -80,10 +83,10 @@ export function ProfileForm({ user }: ProfileFormProps) {
       </div>
 
       <div>
-        <label htmlFor="address" className="block text-xs font-semibold text-foreground mb-1">
+        <Label htmlFor="address" className="block text-xs font-semibold text-foreground mb-1">
           Adres
-        </label>
-        <textarea
+        </Label>
+        <Textarea
           id="address"
           name="address"
           rows={3}

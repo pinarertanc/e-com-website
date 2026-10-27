@@ -23,7 +23,16 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "*.auth0.com",
       },
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com',
+      }
     ],
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "10mb",
+    },
   },
 };
 

@@ -1,8 +1,6 @@
-'use client';
 
 import Link from "next/link";
-import Image from "next/image";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { getSessionUser } from "@/lib/auth0";
 import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
@@ -24,12 +22,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { LogOut, Settings, ShoppingBag, Tag, PlusCircle, ShoppingCart } from "lucide-react";
 
-import { SearchBar } from "@/components/SearchBar";
-import { MutedText, BodyText } from "./typography";
+import { SearchBar } from "@/components/storefront/SearchBar";
+import { MutedText, BodyText } from "../typography";
+import { BrandLogo } from "./brandlogo";
 
-export function TopNavigation() {
-  const { user } = useUser();
-  const hasSession = Boolean(user);
+export async function TopNavBar() {
+  const user = await getSessionUser();
+ 
 
   const userInitials = user?.name
     ? user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
@@ -39,20 +38,11 @@ export function TopNavigation() {
 
   return (
     <header className="sticky top-3 z-40 px-3 sm:px-4 max-w-6xl mx-auto w-full">
-      <div className="bg-background/80 backdrop-blur-md border border-border rounded-full px-4 sm:px-6 py-1.5 shadow-sm transition-all flex items-center justify-between gap-2 sm:gap-4 h-16 sm:h-20">
+      <div className="bg-background/80 dark:bg-card/90 backdrop-blur-md border border-border dark:border-primary/20 rounded-full px-4 sm:px-6 py-1.5 shadow-md dark:shadow-[0_8px_30px_rgb(0,0,0,0.5)] dark:shadow-primary/10 transition-all flex items-center justify-between gap-2 sm:gap-4 h-16 sm:h-20">
         
         <div className="shrink-0 flex items-center">
           <Link href="/" className="flex items-center group py-1">
-            <Image
-              src="/logo.png"
-              alt="Hurç Logo"
-              width={260}
-              height={90}
-              priority
-              unoptimized
-              style={{ width: "auto" }}
-              className="!h-10 sm:!h-14 md:!h-16 lg:!h-20 max-w-none object-contain group-hover:scale-105 transition-transform"
-            />
+            <BrandLogo />
           </Link>
         </div>
 
@@ -74,7 +64,7 @@ export function TopNavigation() {
             )}
           </Link>
 
-          {hasSession ? (
+          {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-2 outline-none rounded-full p-0.5 hover:ring-2 hover:ring-ring transition-all cursor-pointer">
                 <Avatar className="w-10 h-10 border border-border">

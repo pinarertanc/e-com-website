@@ -1,0 +1,81 @@
+// use prisma-8
+model Product {
+  id          ObjectId         @id @map("_id")
+  name        String           @unique
+  description String
+  category    Category
+  condition   ProductCondition
+  priceCents  Int32
+  currency    Currency
+  stock       Int32
+  ageGroup    AgeGroup?
+  imageUrls   String[]
+  isActive    Bool
+
+  sellerId    String
+  seller      User             @relation("UserProducts", fields: [sellerId], references: [id])
+
+  createdAt   Date
+  updatedAt   Date
+
+  @@map("products")
+}
+
+model User {
+  id                ObjectId  @id @map("_id")
+  email             String    @unique
+  password          String
+  firstName         String
+  lastName          String
+  phone             String?
+  profilePictureUrl String?
+
+  role              Role
+
+  city              String?
+  district          String?
+
+  products          Product[] @relation("UserProducts")
+
+  createdAt         Date
+  updatedAt         Date
+
+  @@map("users")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Currency {
+  EUR
+  GBP
+  USD
+  TRY
+}
+
+enum Category {
+  STROLLERS_AND_CARRIERS
+  CLOTHING_AND_SHOES
+  NURSERY_AND_FURNITURE
+  FEEDING_AND_CARE
+  TOYS_AND_BOOKS
+  MATERNITY_AND_MOM
+  OTHER
+}
+
+enum ProductCondition {
+  NEW
+  LIKE_NEW
+  USED
+}
+
+enum AgeGroup {
+  NEWBORN
+  BABY_3_12M
+  TODDLER_1_3Y
+  KIDS_3_6Y
+  KIDS_6_12Y
+  MATERNITY
+}
