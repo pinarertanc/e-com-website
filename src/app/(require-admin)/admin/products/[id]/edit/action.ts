@@ -38,6 +38,9 @@ export async function updateProductAction(
   const sellerId = formData.get("sellerId") as string;
   const ageGroup = formData.get("ageGroup") as AgeGroup;
 
+  const stripePriceId = formData.get("stripePriceId") as string;
+  const stripeProductId = formData.get("stipeProductId") as string;
+
   const existingImages = parseUrlList(formData.get("imageUrls"));
   const imagesToDelete = parseUrlList(formData.get("imagesToDelete"));
 
@@ -73,6 +76,8 @@ export async function updateProductAction(
       sellerId,
       ageGroup,
       imageUrls: [...existingImages, ...uploadedUrls],
+      stripePriceId,
+      stripeProductId,
     });
 
 

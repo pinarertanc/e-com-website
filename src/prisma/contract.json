@@ -252,6 +252,20 @@
                   "kind": "scalar"
                 }
               },
+              "stripePriceId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "stripeProductId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
               "updatedAt": {
                 "nullable": false,
                 "type": {
@@ -498,6 +512,12 @@
                     "stock": {
                       "bsonType": "int"
                     },
+                    "stripePriceId": {
+                      "bsonType": "string"
+                    },
+                    "stripeProductId": {
+                      "bsonType": "string"
+                    },
                     "updatedAt": {
                       "bsonType": "date"
                     }
@@ -515,6 +535,8 @@
                     "priceCents",
                     "sellerId",
                     "stock",
+                    "stripePriceId",
+                    "stripeProductId",
                     "updatedAt"
                   ]
                 },
@@ -666,7 +688,7 @@
         "kind": "mongo-database"
       }
     },
-    "storageHash": "496555c5952d9e4b45757fd4042ed5cedecac46cb182022fd2f119c8a2f076ef"
+    "storageHash": "49d9bc8dd4e94ad8836e4d1f8ddfe5035f609718f0f1abb64e94be2ee7bbdeaa"
   },
   "capabilities": {},
   "extensions": {},

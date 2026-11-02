@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-mongo/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'496555c5952d9e4b45757fd4042ed5cedecac46cb182022fd2f119c8a2f076ef'>;
+  StorageHashBase<'49d9bc8dd4e94ad8836e4d1f8ddfe5035f609718f0f1abb64e94be2ee7bbdeaa'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'251b3ce23f6c9f561892e7c1af9d2cc941a13d64ba1aa7226b90036b09568cc3'>;
@@ -49,6 +49,8 @@ export type FieldOutputTypes = {
       readonly priceCents: CodecTypes['mongo/int32@1']['output'];
       readonly sellerId: CodecTypes['mongo/string@1']['output'];
       readonly stock: CodecTypes['mongo/int32@1']['output'];
+      readonly stripePriceId: CodecTypes['mongo/string@1']['output'];
+      readonly stripeProductId: CodecTypes['mongo/string@1']['output'];
       readonly updatedAt: CodecTypes['mongo/date@1']['output'];
     };
     readonly User: {
@@ -91,6 +93,8 @@ export type FieldInputTypes = {
       readonly priceCents: CodecTypes['mongo/int32@1']['input'];
       readonly sellerId: CodecTypes['mongo/string@1']['input'];
       readonly stock: CodecTypes['mongo/int32@1']['input'];
+      readonly stripePriceId: CodecTypes['mongo/string@1']['input'];
+      readonly stripeProductId: CodecTypes['mongo/string@1']['input'];
       readonly updatedAt: CodecTypes['mongo/date@1']['input'];
     };
     readonly User: {
@@ -133,6 +137,8 @@ export namespace Models {
     priceCents: CodecTypes['mongo/int32@1']['output'];
     sellerId: CodecTypes['mongo/string@1']['output'];
     stock: CodecTypes['mongo/int32@1']['output'];
+    stripePriceId: CodecTypes['mongo/string@1']['output'];
+    stripeProductId: CodecTypes['mongo/string@1']['output'];
     updatedAt: CodecTypes['mongo/date@1']['output'];
     seller: unbound_User;
     readonly [RelationKeys]?: 'seller';
@@ -230,6 +236,8 @@ type ContractBase = Omit<
                     readonly priceCents: { readonly bsonType: 'int' };
                     readonly sellerId: { readonly bsonType: 'string' };
                     readonly stock: { readonly bsonType: 'int' };
+                    readonly stripePriceId: { readonly bsonType: 'string' };
+                    readonly stripeProductId: { readonly bsonType: 'string' };
                     readonly updatedAt: { readonly bsonType: 'date' };
                   };
                   readonly required: readonly [
@@ -245,6 +253,8 @@ type ContractBase = Omit<
                     'priceCents',
                     'sellerId',
                     'stock',
+                    'stripePriceId',
+                    'stripeProductId',
                     'updatedAt',
                   ];
                 };
@@ -374,6 +384,14 @@ type ContractBase = Omit<
               readonly stock: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/int32@1' };
+              };
+              readonly stripePriceId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly stripeProductId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
               };
               readonly updatedAt: {
                 readonly nullable: false;

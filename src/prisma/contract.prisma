@@ -15,6 +15,9 @@ model Product {
   sellerId    String
   seller      User             @relation("UserProducts", fields: [sellerId], references: [id])
 
+  stripePriceId     String
+  stripeProductId   String
+
   createdAt   Date
   updatedAt   Date
 

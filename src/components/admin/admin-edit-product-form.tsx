@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ACCEPTED_IMAGE_ACCEPT_ATTR } from "@/lib/product-images";
-import { Currency, EU_CURRENCY_OPTIONS } from "@/types/currency";
+import { EU_CURRENCY_OPTIONS } from "@/types/currency";
 import { PRODUCT_CATEGORY_OPTIONS, CONDITION_OPTIONS, Product, AGE_GROUP_OPTIONS } from "@/types/product";
 import { updateProductAction} from "@/app/(require-admin)/admin/products/[id]/edit/action";
 import { ProductActionState } from '@/types/product';
@@ -38,10 +38,13 @@ export function EditProductForm({ product }: EditProductFormProps) {
   return (
     <form action={formAction} className="space-y-8">
   
-      <input type="hidden" name="sellerId" value={product.sellerId} />
-      <input type="hidden" name="productId" value={product.id} />
-      <input type="hidden" name="imageUrls" value={JSON.stringify(existingImages)} />
-      <input type="hidden" name="imagesToDelete" value={JSON.stringify(imagesToDelete)} />
+      <Input type="hidden" name="sellerId" value={product.sellerId} />
+      <Input type="hidden" name="productId" value={product.id} />
+      <Input type="hidden" name="imageUrls" value={JSON.stringify(existingImages)} />
+      <Input type="hidden" name="imagesToDelete" value={JSON.stringify(imagesToDelete)} />
+      <Input type="hidden" name="stripeProductId" value={product.stripeProductId} />
+       <Input type="hidden" name="stripePriceId" value={product.stripePriceId} />
+
 
       {state?.error && (
         <div

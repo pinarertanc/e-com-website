@@ -9,6 +9,7 @@ import {
 import { Currency } from '@/types/currency';
 import { AgeGroup, ProductCategory, ProductCondition } from '@/types/product';
 import { put } from '@vercel/blob';
+import { stripe } from '@/lib/stripe';
 
 export type CreateProductFormValues = {
   name: string;
@@ -123,6 +124,17 @@ export async function createProduct(
   const user = await requireUser();
   const sellerId = typeof user?.id === "string" ? user.id : String(user?.id ?? "");
 
+  const stripeProduct = await stripe.products.create({
+  name: parsed.data.name,
+  description: parsed.data.description,
+});
+
+const stripePrice = await stripe.prices.create({
+  product: stripeProduct.id,
+  unit_amount: Math.round(parseFloat(parsed.data.price) * 100),
+  currency: parsed.data.currency.toLowerCase(),
+});
+
   try {
     const createdProduct = await addProduct({
       name: parsed.data.name,
@@ -135,6 +147,8 @@ export async function createProduct(
       isActive: parsed.data.isActive,
       sellerId: sellerId,
       condition: parsed.data.condition,
+      stripePriceId: stripePrice.id,
+      stripeProductId: stripeProduct.id
     });
 
     if (!createdProduct) {
