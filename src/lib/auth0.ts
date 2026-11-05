@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 export const auth0 = new Auth0Client();
 
-const ROLES_CLAIM = "https://ecom.com/roles";
+export const ROLES_CLAIM = "https://ecom.com/roles";
 
 export enum AppRole {
   USER = 'user',
@@ -81,6 +81,7 @@ export async function requireUser(): Promise<Auth0SessionUser> {
 
 export async function requireAdmin(): Promise<Auth0SessionUser> {
   const user = await requireUser();
+  
   if (!isAdmin(user)) redirect("/forbidden");
   return user;
 }

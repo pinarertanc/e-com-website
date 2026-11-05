@@ -1,5 +1,5 @@
 import { getSessionUser } from "@/lib/auth0"; 
-import { ProfileForm } from "@/components/UserSettingsForm";
+import { ProfileForm } from "@/components/user/UserSettingsForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Shield, MapPin } from "lucide-react";
