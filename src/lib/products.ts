@@ -77,8 +77,6 @@ export async function getProductById(_id:string){
   return toAppProduct(foundProduct);
   }
   
-  
-
 
 export async function parseStorefrontFilters(
   searchParams: Record<string, string | string[] | undefined>,

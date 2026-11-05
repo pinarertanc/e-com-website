@@ -3,11 +3,15 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { put, del } from '@vercel/blob';
-import { AgeGroup, ProductActionState, ProductCategory, ProductCondition } from '@/types/product';
-import { Currency } from '@/types/currency';
 import { updateProduct } from '@/lib/products';
 import type { Product } from '@/types/product';
 import { requireAdmin } from '@/lib/auth0';
+import { parseFormValues , flattenFieldErrors} from '@/types/product';
+
+import { getProductById } from '@/lib/products';
+import {UpdateProductFormSchema,} from '@/lib/validation/product';
+import { UpdateProductState } from '@/types/product';
+
 
 function parseUrlList(value: FormDataEntryValue | null): string[] {
   try {
@@ -21,23 +25,33 @@ function parseUrlList(value: FormDataEntryValue | null): string[] {
 export async function updateProductAction(
   prevState: any,
   formData: FormData
-): Promise<ProductActionState> {
+): Promise<UpdateProductState> {
 
    await requireAdmin();
    
+  const values = await parseFormValues(formData);
 
-  const productId = formData.get("productId") as string;
-  const name = formData.get("name") as string;
-  const description = formData.get("description") as string;
-  const priceRaw = formData.get("price") as string;
-  const currency = formData.get("currency") as Currency;
-  const stockRaw = formData.get("stock") as string;
-  const isActive = formData.get("isActive") === "on";
-  const condition = formData.get("condition") as ProductCondition;
-  const category = formData.get("category") as ProductCategory;
-  const sellerId = formData.get("sellerId") as string;
-  const ageGroup = formData.get("ageGroup") as AgeGroup;
+   const parsed = UpdateProductFormSchema.safeParse(values);
+     if (!parsed.success) {
+       return {
+         success: false,
+         message: 'Please fix the errors below.',
+         values,
+         fieldErrors: flattenFieldErrors(parsed.error.flatten().fieldErrors),
+       };
+     }
+   
+   const productId = values.productId;
+   const existingProduct = await getProductById(productId)
 
+   if (!existingProduct) {
+    return { error: "Güncellenmek istenen ürün bulunamadı." };
+  }
+
+   if (!productId) {
+    return { error: "Geçersiz ürün kimliği." };
+  }
+  
   const existingImages = parseUrlList(formData.get("imageUrls"));
   const imagesToDelete = parseUrlList(formData.get("imagesToDelete"));
 
@@ -52,7 +66,7 @@ export async function updateProductAction(
    
     const uploadedUrls = await Promise.all(
       newFiles.map(async (file) => {
-        const blob = await put(`products/${productId}/${file.name}`, file, {
+        const blob = await put(`products/${values.productId}/${file.name}`, file, {
           access: "public",
           addRandomSuffix: true,
         });
@@ -61,17 +75,17 @@ export async function updateProductAction(
     );
 
     
-     updated = await updateProduct(productId, {
-      name,
-      description,
-      priceCents: Math.round(parseFloat(priceRaw.replace(",", ".")) * 100),
-      stock: parseInt(stockRaw, 10) || 0,
-      isActive,
-      condition,
-      category,
-      currency,
-      sellerId,
-      ageGroup,
+     updated = await updateProduct(values.productId, {
+      name: values.name,
+      description: values.description,
+      priceCents: Math.round(parseFloat(values.price.replace(",", ".")) * 100),
+      stock: parseInt(values.stock, 10) || 0,
+      isActive: values.isActive,
+      condition: values.condition,
+      category: values.category,
+      currency: values.currency,
+      sellerId: existingProduct.sellerId,
+      ageGroup: values.ageGroup,
       imageUrls: [...existingImages, ...uploadedUrls],
     });
 
@@ -90,3 +104,5 @@ export async function updateProductAction(
   }
   return { error: "Güncelleme başarısız oldu." };
 }
+
+

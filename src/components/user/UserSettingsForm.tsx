@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { updateProfileAction } from "@/app/(require-user)/user/settings/action";
 import { ProfileFormProps } from "@/types/user";
-import { actionResponse } from "@/types/form";
+import { actionResponse } from "@/lib/validation/form";
 import { MutedText } from "../typography";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";

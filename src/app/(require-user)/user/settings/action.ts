@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from "next/cache";
-import { actionResponse, profileSchema } from "@/types/form";
+import { actionResponse, profileSchema } from "@/lib/validation/form";
 
 
 export async function updateProfileAction(prevState: actionResponse, formData:FormData):Promise<actionResponse>{

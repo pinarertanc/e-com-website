@@ -6,13 +6,14 @@ import {
   MAX_IMAGE_BYTES,
   MAX_IMAGE_MB,
 } from "@/lib/product-images";
-import { ProductCategory, ProductCondition } from "@/types/product";
+import { AgeGroup, ProductCategory, ProductCondition } from "@/types/product";
 import { priceStringToCents } from "@/types/currency";
 
 const PRICE_PATTERN = /^\d+(\.\d{1,2})?$/;
 
 export const productCategorySchema = z.enum(ProductCategory);
 export const productConditionSchema = z.enum(ProductCondition);
+export const ageGroupSchema = z.enum(AgeGroup);
 
 export const createProductFormSchema = z.object({
   name: z.string().trim().min(1, "Name is required"),
@@ -33,6 +34,7 @@ export const createProductFormSchema = z.object({
     .refine((value) => Number(value) >= 0, "Stock cannot be negative"),
   isActive: z.boolean(),
   condition: productConditionSchema,
+  AgeGroup: ageGroupSchema,
   });
 
 
@@ -52,6 +54,7 @@ export const createProductDataSchema = createProductFormSchema.transform(
     stock: Number(values.stock),
     isActive: values.isActive,
     condition: values.condition,
+    ageGroup: values.AgeGroup,
   }),
 );
 
@@ -59,11 +62,11 @@ export type CreateProductData = z.infer<typeof createProductDataSchema>;
 
 
 
-export const UpdateProductFromSchema = createProductFormSchema;
+export const UpdateProductFormSchema = createProductFormSchema;
 
-export type UpdateProductFormInput =z.infer<typeof UpdateProductFromSchema>;
+export type UpdateProductFormInput =z.infer<typeof UpdateProductFormSchema>;
 
-export const updateProductDataSchema = UpdateProductFromSchema.transform(
+export const updateProductDataSchema = UpdateProductFormSchema.transform(
   (values)=> ({
     name:values.name,
     description: values.description,
@@ -73,6 +76,7 @@ export const updateProductDataSchema = UpdateProductFromSchema.transform(
     stock:Number(values.stock),
     isActive:values.isActive,
     condition:values.condition,
+    AgeGroup:values.AgeGroup,
 
   })
 )
