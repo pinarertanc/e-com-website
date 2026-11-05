@@ -5,26 +5,38 @@ import { del } from '@vercel/blob';
 import { revalidatePath } from "next/cache";
 import {redirect} from 'next/navigation';
 
-export async function deleteProductAction (productId: string):Promise<void>{
+type DeleteProductState = { error: string | null };
+
+export async function deleteProductAction (
+  prevState: DeleteProductState,
+  formData: FormData,
+):Promise<DeleteProductState>{
 
   await requireAdmin();
 
+  const productId = String(formData.get("productId"))
   const product = await getProductById(productId);
+
   if(!product){
-    return ;
+    redirect("/admin/products");
   }
+
+  if(product.imageUrls.length > 0) 
+    { try {  await del([...product.imageUrls]);}
+      catch(error){ console.error("Blob silme hatası", error);
+        return {
+        error: "Images could not be deleted. The product is still saved. Try again.",
+      }
+    }}
 
   const deleted = await deleteProduct(productId);
   if(!deleted){
-    throw new Error ("ürün silinemedi");
-  }
-
-  try {
-    if (product.imageUrls.length > 0) await del([...product.imageUrls]);
-  } catch (err) {
-    console.error("Blob silme hatası:", err); 
+   return {
+    error: "Images were deleted, but the product record was not. Try again.",
+   }
   }
 
   revalidatePath ("/admin/products");
   redirect("/admin/products");
+  
 }

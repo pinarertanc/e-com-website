@@ -144,3 +144,68 @@ export type ProductActionState = {
 export type EditProductFormProps = {
   product : Product;
 };
+
+export type UpdateProductState = {
+  error?: string;
+  success?: boolean;
+  message?: string;
+  values?: Awaited<ReturnType<typeof parseFormValues>>;
+  fieldErrors?: ReturnType<typeof flattenFieldErrors>;
+};
+
+export type CreateProductFormValues = {
+  name: string;
+  description: string;
+  price: string;
+  currency: Currency;
+  category: ProductCategory;
+  stock: string;
+  isActive: boolean;
+  condition: ProductCondition;
+  ageGroup: AgeGroup;
+  sellerId: string;
+  productId: string;
+};
+
+export async function parseFormValues(formData: FormData): Promise<CreateProductFormValues> {
+  return {
+    name: String(formData.get('name') ?? ''),
+    description: String(formData.get('description') ?? ''),
+    price: String(formData.get('price') ?? ''),
+    currency: String(formData.get('currency') ?? '') as Currency,
+    category: String(formData.get('category') ?? '') as ProductCategory,
+    stock: String(formData.get('stock') ?? ''),
+    isActive: formData.get('isActive') === 'on',
+    condition: String(formData.get('condition') ?? '') as ProductCondition,
+    ageGroup: String(formData.get("ageGroup") ?? '') as AgeGroup,
+    sellerId: String(formData.get("sellerId") ?? ''),
+    productId: String(formData.get("productId") ?? '')
+  };
+}
+
+
+export type CreateProductFieldErrors = Partial<
+  Record<keyof CreateProductFormValues | 'images', string>
+>;
+
+export type CreateProductState =
+  | { success: true; productId: string }
+  | {
+      success: false;
+      message: string;
+      values?: CreateProductFormValues;
+      fieldErrors?: CreateProductFieldErrors;
+    };
+
+
+export function flattenFieldErrors(
+  fieldErrors: Record<string, string[] | undefined>,
+): CreateProductFieldErrors {
+  return Object.fromEntries(
+    Object.entries(fieldErrors).map(([key, messages]) => [
+      key,
+      messages?.[0] ?? '',
+    ]),
+  ) as CreateProductFieldErrors;
+}
+

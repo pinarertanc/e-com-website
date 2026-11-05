@@ -1,72 +1,34 @@
 'use server';
 
-import { requireUser } from '@/lib/auth0';
+import { requireAdmin} from '@/lib/auth0';
 import { addProduct } from '@/lib/products';
 import {
   createProductFormSchema,
   createProductImagesSchema,
 } from '@/lib/validation';
-import { Currency } from '@/types/currency';
-import { AgeGroup, ProductCategory, ProductCondition } from '@/types/product';
 import { put } from '@vercel/blob';
 import { stripe } from '@/lib/stripe';
+import { auth0 } from '@/lib/auth0'; 
+import { parseFormValues,flattenFieldErrors } from '@/types/product';
+import { CreateProductState } from '@/types/product';
 
-export type CreateProductFormValues = {
-  name: string;
-  description: string;
-  price: string;
-  currency: Currency;
-  category: ProductCategory;
-  stock: string;
-  isActive: boolean;
-  condition: ProductCondition;
-  ageGroup: AgeGroup;
-};
 
-export type CreateProductFieldErrors = Partial<
-  Record<keyof CreateProductFormValues | 'images', string>
->;
-
-export type CreateProductState =
-  | { success: true; productId: string }
-  | {
-      success: false;
-      message: string;
-      values?: CreateProductFormValues;
-      fieldErrors?: CreateProductFieldErrors;
-    };
-
-function parseFormValues(formData: FormData): CreateProductFormValues {
-  return {
-    name: String(formData.get('name') ?? ''),
-    description: String(formData.get('description') ?? ''),
-    price: String(formData.get('price') ?? ''),
-    currency: String(formData.get('currency') ?? '') as Currency,
-    category: String(formData.get('category') ?? '') as ProductCategory,
-    stock: String(formData.get('stock') ?? ''),
-    isActive: formData.get('isActive') === 'on',
-    condition: String(formData.get('condition') ?? '') as ProductCondition,
-    ageGroup: String(formData.get("ageGroup") ?? '') as AgeGroup,
-  };
-}
-
-function flattenFieldErrors(
-  fieldErrors: Record<string, string[] | undefined>,
-): CreateProductFieldErrors {
-  return Object.fromEntries(
-    Object.entries(fieldErrors).map(([key, messages]) => [
-      key,
-      messages?.[0] ?? '',
-    ]),
-  ) as CreateProductFieldErrors;
-}
 
 export async function createProduct(
   _prevState: CreateProductState | null,
   formData: FormData,
 ): Promise<CreateProductState> {
 
-  const values = parseFormValues(formData);
+  await requireAdmin();
+   const session = await auth0.getSession();
+
+   if (!session || !session.user) {
+  throw new Error("Bu işlem için oturum açmanız gerekmektedir.");
+}
+   const sellerId = session.user.sub;
+
+  const values = await parseFormValues(formData);
+  
  
   const parsed = createProductFormSchema.safeParse(values);
   if (!parsed.success) {
@@ -121,8 +83,6 @@ export async function createProduct(
     };
   }
 
-  const user = await requireUser();
-  const sellerId = typeof user?.id === "string" ? user.id : String(user?.id ?? "");
 
   const stripeProduct = await stripe.products.create({
   name: parsed.data.name,
@@ -148,7 +108,8 @@ const stripePrice = await stripe.prices.create({
       sellerId: sellerId,
       condition: parsed.data.condition,
       stripePriceId: stripePrice.id,
-      stripeProductId: stripeProduct.id
+      stripeProductId: stripeProduct.id,
+      ageGroup: parsed.data.AgeGroup
     });
 
     if (!createdProduct) {
@@ -172,3 +133,5 @@ const stripePrice = await stripe.prices.create({
     };
   }
 }
+
+
