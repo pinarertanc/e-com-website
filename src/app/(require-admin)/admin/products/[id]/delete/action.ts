@@ -8,13 +8,12 @@ import {redirect} from 'next/navigation';
 type DeleteProductState = { error: string | null };
 
 export async function deleteProductAction (
-  prevState: DeleteProductState,
+  productId:string,
   formData: FormData,
 ):Promise<DeleteProductState>{
 
   await requireAdmin();
 
-  const productId = String(formData.get("productId"))
   const product = await getProductById(productId);
 
   if(!product){

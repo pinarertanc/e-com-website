@@ -29,6 +29,13 @@ export default async function DeleteProductPage({ params }: DeleteProductPagePro
     notFound();
   }
 
+  const productId = product.id
+
+  async function handleDelete(formData: FormData): Promise<void> {
+    "use server";
+    await deleteProductAction(id, formData);
+  }
+
   const imageCount = product.imageUrls?.length ?? 0;
 
   return (
@@ -68,7 +75,7 @@ export default async function DeleteProductPage({ params }: DeleteProductPagePro
         </CardContent>
 
         <CardFooter className="flex flex-wrap gap-3">
-          <form action={deleteProductAction.bind(null, product.id)}>
+          <form action={handleDelete}>
             <Button type="submit" variant="destructive">
               Ürünü kalıcı olarak sil
             </Button>
