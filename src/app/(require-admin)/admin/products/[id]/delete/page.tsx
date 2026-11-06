@@ -67,6 +67,7 @@ export default async function DeleteProductPage({ params }: DeleteProductPagePro
                 ? `${imageCount} görsel Vercel Blob'dan da silinir.`
                 : "Bu ürüne bağlı görsel yok."}
             </li>
+            <li>Ürünün Stripe kaydı arşive alınır.</li>
             <li>
               Sadece mağazada gizlemek istiyorsan silmek yerine düzenleme
               sayfasından "active" kutusunu kaldırman yeterli.

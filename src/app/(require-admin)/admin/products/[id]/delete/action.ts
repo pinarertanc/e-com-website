@@ -1,6 +1,7 @@
 'use server';
 import { requireAdmin } from "@/lib/auth0";
 import { deleteProduct, getProductById } from "@/lib/products";
+import { archiveStripeProduct } from "@/lib/stripe";
 import { del } from '@vercel/blob';
 import { revalidatePath } from "next/cache";
 import {redirect} from 'next/navigation';
@@ -33,6 +34,17 @@ export async function deleteProductAction (
    return {
     error: "Images were deleted, but the product record was not. Try again.",
    }
+  }
+if (product.stripeProductId) {
+    try {
+      await archiveStripeProduct(product.stripeProductId);
+    } catch (error) {
+      console.error("Stripe arşivleme hatası:", error);
+    
+      return {
+        error: "Stripe üzerinde ürün arşivlenemedi. Ürün silinmedi.",
+      };
+    }
   }
 
   revalidatePath ("/admin/products");

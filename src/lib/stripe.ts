@@ -10,7 +10,31 @@ const stripeKey = ()=>{
   }
 }
 
-
-
 export const stripe = new Stripe(stripeKey());
+
+export async function archiveStripeProduct(stripeProductId: string) {
+  try {
+    
+    const archivedProduct = await stripe.products.update(stripeProductId, {
+      active: false,
+    });
+
+    const prices = await stripe.prices.list({
+      product: stripeProductId,
+      active: true,
+    });
+
+    await Promise.all(
+      prices.data.map((price) =>
+        stripe.prices.update(price.id, { active: false })
+      )
+    );
+
+    return archivedProduct;
+  } catch (error) {
+    console.error("Stripe archiving error:", error);
+    throw error;
+  }
+}
+
 

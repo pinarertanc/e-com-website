@@ -10,6 +10,7 @@ import {
   type ProductCategory,
   type ProductSort,
 } from "@/types/product";
+import { archiveStripeProduct } from './stripe';
 
 type DbProduct = FieldOutputTypes["__unbound__"]["Product"];
 
@@ -149,6 +150,7 @@ export async function deleteProduct(_id:string): Promise<Product | null>{
   if(!deletedProduct){
     return null;
   }
+
   return toAppProduct(deletedProduct);
 }
 
