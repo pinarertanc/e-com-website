@@ -18,7 +18,7 @@ export async function POST() {
         },
       ],
       mode: 'payment',
-      cancel_url: `${origin}/user/checkout`,
+      cancel_url: `${origin}/cart`,
       success_url: `${origin}/user/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
     });
     if (!session.url) {

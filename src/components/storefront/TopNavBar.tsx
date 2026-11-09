@@ -52,7 +52,7 @@ export async function TopNavBar() {
         <div className="hidden md:flex items-center gap-4 shrink-0">
 
           <Link
-            href="/user/cart"
+            href="/cart"
             className="relative p-2.5 rounded-full hover:bg-secondary text-foreground/80 hover:text-foreground transition-all cursor-pointer group"
             title="Sepetim"
           >

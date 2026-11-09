@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { getProductById } from "@/lib/products";
 import { requireAdmin } from "@/lib/auth0";
-import { ProductSummaryCard } from "@/components/ProductSummaryCard.tsx";
+import { ProductSummaryCard } from "@/components/admin/admin-ProductSummaryCard";
 import { deleteProductAction } from "./action";
 
 type DeleteProductPageProps = {
@@ -28,8 +28,6 @@ export default async function DeleteProductPage({ params }: DeleteProductPagePro
   if (!product) {
     notFound();
   }
-
-  const productId = product.id
 
   async function handleDelete(formData: FormData): Promise<void> {
     "use server";
