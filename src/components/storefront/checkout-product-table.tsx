@@ -44,6 +44,7 @@ export async function CheckoutProductsTable({products}:CheckoutProductsTableProp
             <TableHead className="w-16">Select</TableHead>
             <TableHead className="w-16">Image</TableHead>
             <TableHead>Name</TableHead> 
+            <TableHead>Quantity</TableHead> 
             <TableHead>Price</TableHead>
             
           </TableRow>
@@ -69,6 +70,7 @@ export async function CheckoutProductsTable({products}:CheckoutProductsTableProp
                 </div>
               </TableCell>
               <TableCell className="font-medium">{item.name}</TableCell>
+              <TableCell className="font-medium">{item.quantity}</TableCell>
               <TableCell>
                 {formatPrice(item.priceCents, item.currency as Currency)}
               </TableCell>

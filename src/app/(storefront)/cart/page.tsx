@@ -21,10 +21,9 @@ export default async function CartPage({params}: CartPageProps) {
      }
 
   return (
-     <main className="space-y-6 p-6">
-    <div className="space-y-2">
-      <PageTitle>Sepet</PageTitle>
-      <div className="flex flex-col md:flex-row items-start gap-8">
+     <main className="space-y-6 p-6 ">
+    <div className="space-y-2 p-6 ">
+      <div className="flex flex-col md:flex-row items-start gap-8 justify-center">
       <CheckoutProductsTable products={[product]}/>
       <CheckoutSummary product={product}/>
       </div>
