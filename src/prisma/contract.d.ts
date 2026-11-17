@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-mongo/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'ac809ea06cdf6c261f359c152de76b373f0c203c38ff48b6e759826f524d75a6'>;
+  StorageHashBase<'0db32dc31cf7167561824d66238e4dd68da4f9b2efede76db47b4c5615f25c57'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'251b3ce23f6c9f561892e7c1af9d2cc941a13d64ba1aa7226b90036b09568cc3'>;
@@ -55,7 +55,7 @@ export type FieldOutputTypes = {
       readonly isActive: CodecTypes['mongo/bool@1']['output'];
       readonly name: CodecTypes['mongo/string@1']['output'];
       readonly priceCents: CodecTypes['mongo/int32@1']['output'];
-      readonly sellerId: CodecTypes['mongo/objectId@1']['output'];
+      readonly sellerId: CodecTypes['mongo/string@1']['output'];
       readonly stock: CodecTypes['mongo/int32@1']['output'];
       readonly stripePriceId: CodecTypes['mongo/string@1']['output'];
       readonly stripeProductId: CodecTypes['mongo/string@1']['output'];
@@ -107,7 +107,7 @@ export type FieldInputTypes = {
       readonly isActive: CodecTypes['mongo/bool@1']['input'];
       readonly name: CodecTypes['mongo/string@1']['input'];
       readonly priceCents: CodecTypes['mongo/int32@1']['input'];
-      readonly sellerId: CodecTypes['mongo/objectId@1']['input'];
+      readonly sellerId: CodecTypes['mongo/string@1']['input'];
       readonly stock: CodecTypes['mongo/int32@1']['input'];
       readonly stripePriceId: CodecTypes['mongo/string@1']['input'];
       readonly stripeProductId: CodecTypes['mongo/string@1']['input'];
@@ -162,7 +162,7 @@ export namespace Models {
     isActive: CodecTypes['mongo/bool@1']['output'];
     name: CodecTypes['mongo/string@1']['output'];
     priceCents: CodecTypes['mongo/int32@1']['output'];
-    sellerId: CodecTypes['mongo/objectId@1']['output'];
+    sellerId: CodecTypes['mongo/string@1']['output'];
     stock: CodecTypes['mongo/int32@1']['output'];
     stripePriceId: CodecTypes['mongo/string@1']['output'];
     stripeProductId: CodecTypes['mongo/string@1']['output'];
@@ -295,7 +295,7 @@ type ContractBase = Omit<
                     readonly isActive: { readonly bsonType: 'bool' };
                     readonly name: { readonly bsonType: 'string' };
                     readonly priceCents: { readonly bsonType: 'int' };
-                    readonly sellerId: { readonly bsonType: 'objectId' };
+                    readonly sellerId: { readonly bsonType: 'string' };
                     readonly stock: { readonly bsonType: 'int' };
                     readonly stripePriceId: { readonly bsonType: 'string' };
                     readonly stripeProductId: { readonly bsonType: 'string' };
@@ -499,7 +499,7 @@ type ContractBase = Omit<
               };
               readonly sellerId: {
                 readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
               };
               readonly stock: {
                 readonly nullable: false;
