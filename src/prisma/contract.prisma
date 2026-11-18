@@ -1,7 +1,7 @@
 // use prisma-8
 model Product {
   id          ObjectId         @id @map("_id")
-  name        String           @unique
+  name        String           
   description String
   category    Category
   condition   ProductCondition
@@ -15,10 +15,33 @@ model Product {
   sellerId    String
   seller      User             @relation("UserProducts", fields: [sellerId], references: [id])
 
+  cartItems   CartItem[]       @relation("ProductCartItems")
+
+  stripePriceId     String
+  stripeProductId   String
+
   createdAt   Date
   updatedAt   Date
 
   @@map("products")
+}
+
+model CartItem {
+  id        ObjectId     @id  @map("_id") 
+
+  userId    String
+  user      User      @relation("UserCartItems", fields: [userId], references: [id])
+ 
+  productId ObjectId
+  product   Product    @relation("ProductCartItems", fields: [productId], references: [id])
+
+  quantity  Int32     
+  createdAt Date     
+  updatedAt Date    
+
+  @@unique([userId, productId])
+  @@map("cart_items")
+
 }
 
 model User {
@@ -29,13 +52,12 @@ model User {
   lastName          String
   phone             String?
   profilePictureUrl String?
-
   role              Role
-
   city              String?
   district          String?
 
   products          Product[] @relation("UserProducts")
+  cartItem          CartItem[] @relation("UserCartItems")
 
   createdAt         Date
   updatedAt         Date

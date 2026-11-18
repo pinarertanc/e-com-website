@@ -34,7 +34,7 @@ export const createProductFormSchema = z.object({
     .refine((value) => Number(value) >= 0, "Stock cannot be negative"),
   isActive: z.boolean(),
   condition: productConditionSchema,
-  AgeGroup: ageGroupSchema,
+  ageGroup: ageGroupSchema,
   });
 
 
@@ -54,7 +54,7 @@ export const createProductDataSchema = createProductFormSchema.transform(
     stock: Number(values.stock),
     isActive: values.isActive,
     condition: values.condition,
-    ageGroup: values.AgeGroup,
+    ageGroup: values.ageGroup,
   }),
 );
 
@@ -76,7 +76,7 @@ export const updateProductDataSchema = UpdateProductFormSchema.transform(
     stock:Number(values.stock),
     isActive:values.isActive,
     condition:values.condition,
-    AgeGroup:values.AgeGroup,
+    AgeGroup:values.ageGroup,
 
   })
 )

@@ -7,6 +7,7 @@ import {
   createProductImagesSchema,
 } from '@/lib/validation';
 import { put } from '@vercel/blob';
+import { stripe } from '@/lib/stripe';
 import { auth0 } from '@/lib/auth0'; 
 import { parseFormValues,flattenFieldErrors } from '@/types/product';
 import { CreateProductState } from '@/types/product';
@@ -83,6 +84,17 @@ export async function createProduct(
   }
 
 
+  const stripeProduct = await stripe.products.create({
+  name: parsed.data.name,
+  description: parsed.data.description,
+});
+
+const stripePrice = await stripe.prices.create({
+  product: stripeProduct.id,
+  unit_amount: Math.round(parseFloat(parsed.data.price) * 100),
+  currency: parsed.data.currency.toLowerCase(),
+});
+
   try {
     const createdProduct = await addProduct({
       name: parsed.data.name,
@@ -95,6 +107,8 @@ export async function createProduct(
       isActive: parsed.data.isActive,
       sellerId: sellerId,
       condition: parsed.data.condition,
+      stripePriceId: stripePrice.id,
+      stripeProductId: stripeProduct.id,
       ageGroup: parsed.data.AgeGroup
     });
 

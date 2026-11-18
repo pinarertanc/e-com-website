@@ -129,6 +129,8 @@ export type Product = {
   imageUrls: readonly string [];
   isActive: boolean;
   sellerId: string;
+  stripePriceId: string;
+  stripeProductId : string;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -142,6 +144,7 @@ export type ProductActionState = {
 export type EditProductFormProps = {
   product : Product;
 };
+
 
 export type UpdateProductState = {
   error?: string;

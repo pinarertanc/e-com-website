@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { getProductById } from "@/lib/products";
 import { requireAdmin } from "@/lib/auth0";
-import { ProductSummaryCard } from "@/components/ProductSummaryCard.tsx";
+import { ProductSummaryCard } from "@/components/admin/admin-ProductSummaryCard";
 import { deleteProductAction } from "./action";
 
 type DeleteProductPageProps = {
@@ -27,6 +27,11 @@ export default async function DeleteProductPage({ params }: DeleteProductPagePro
 
   if (!product) {
     notFound();
+  }
+
+  async function handleDelete(formData: FormData): Promise<void> {
+    "use server";
+    await deleteProductAction(id, formData);
   }
 
   const imageCount = product.imageUrls?.length ?? 0;
@@ -60,6 +65,7 @@ export default async function DeleteProductPage({ params }: DeleteProductPagePro
                 ? `${imageCount} görsel Vercel Blob'dan da silinir.`
                 : "Bu ürüne bağlı görsel yok."}
             </li>
+            <li>Ürünün Stripe kaydı arşive alınır.</li>
             <li>
               Sadece mağazada gizlemek istiyorsan silmek yerine düzenleme
               sayfasından "active" kutusunu kaldırman yeterli.
@@ -68,7 +74,7 @@ export default async function DeleteProductPage({ params }: DeleteProductPagePro
         </CardContent>
 
         <CardFooter className="flex flex-wrap gap-3">
-          <form action={deleteProductAction.bind(null, product.id)}>
+          <form action={handleDelete}>
             <Button type="submit" variant="destructive">
               Ürünü kalıcı olarak sil
             </Button>

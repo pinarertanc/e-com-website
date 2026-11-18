@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-mongo/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'496555c5952d9e4b45757fd4042ed5cedecac46cb182022fd2f119c8a2f076ef'>;
+  StorageHashBase<'3e34426a4977e98cb284d703665b860cd563ae8edcc945272a13b48eac032773'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'251b3ce23f6c9f561892e7c1af9d2cc941a13d64ba1aa7226b90036b09568cc3'>;
@@ -27,6 +27,14 @@ export type CodecTypes = MongoCodecTypes;
 
 export type FieldOutputTypes = {
   readonly __unbound__: {
+    readonly CartItem: {
+      readonly _id: CodecTypes['mongo/objectId@1']['output'];
+      readonly createdAt: CodecTypes['mongo/date@1']['output'];
+      readonly productId: CodecTypes['mongo/objectId@1']['output'];
+      readonly quantity: CodecTypes['mongo/int32@1']['output'];
+      readonly updatedAt: CodecTypes['mongo/date@1']['output'];
+      readonly userId: CodecTypes['mongo/string@1']['output'];
+    };
     readonly Product: {
       readonly _id: CodecTypes['mongo/objectId@1']['output'];
       readonly ageGroup:
@@ -49,6 +57,8 @@ export type FieldOutputTypes = {
       readonly priceCents: CodecTypes['mongo/int32@1']['output'];
       readonly sellerId: CodecTypes['mongo/string@1']['output'];
       readonly stock: CodecTypes['mongo/int32@1']['output'];
+      readonly stripePriceId: CodecTypes['mongo/string@1']['output'];
+      readonly stripeProductId: CodecTypes['mongo/string@1']['output'];
       readonly updatedAt: CodecTypes['mongo/date@1']['output'];
     };
     readonly User: {
@@ -69,6 +79,14 @@ export type FieldOutputTypes = {
 };
 export type FieldInputTypes = {
   readonly __unbound__: {
+    readonly CartItem: {
+      readonly _id: CodecTypes['mongo/objectId@1']['input'];
+      readonly createdAt: CodecTypes['mongo/date@1']['input'];
+      readonly productId: CodecTypes['mongo/objectId@1']['input'];
+      readonly quantity: CodecTypes['mongo/int32@1']['input'];
+      readonly updatedAt: CodecTypes['mongo/date@1']['input'];
+      readonly userId: CodecTypes['mongo/string@1']['input'];
+    };
     readonly Product: {
       readonly _id: CodecTypes['mongo/objectId@1']['input'];
       readonly ageGroup:
@@ -91,6 +109,8 @@ export type FieldInputTypes = {
       readonly priceCents: CodecTypes['mongo/int32@1']['input'];
       readonly sellerId: CodecTypes['mongo/string@1']['input'];
       readonly stock: CodecTypes['mongo/int32@1']['input'];
+      readonly stripePriceId: CodecTypes['mongo/string@1']['input'];
+      readonly stripeProductId: CodecTypes['mongo/string@1']['input'];
       readonly updatedAt: CodecTypes['mongo/date@1']['input'];
     };
     readonly User: {
@@ -111,6 +131,17 @@ export type FieldInputTypes = {
 };
 
 export namespace Models {
+  export type unbound_CartItem = {
+    _id: CodecTypes['mongo/objectId@1']['output'];
+    createdAt: CodecTypes['mongo/date@1']['output'];
+    productId: CodecTypes['mongo/objectId@1']['output'];
+    quantity: CodecTypes['mongo/int32@1']['output'];
+    updatedAt: CodecTypes['mongo/date@1']['output'];
+    userId: CodecTypes['mongo/string@1']['output'];
+    product: unbound_Product;
+    user: unbound_User;
+    readonly [RelationKeys]?: 'product' | 'user';
+  };
   export type unbound_Product = {
     _id: CodecTypes['mongo/objectId@1']['output'];
     ageGroup:
@@ -133,9 +164,12 @@ export namespace Models {
     priceCents: CodecTypes['mongo/int32@1']['output'];
     sellerId: CodecTypes['mongo/string@1']['output'];
     stock: CodecTypes['mongo/int32@1']['output'];
+    stripePriceId: CodecTypes['mongo/string@1']['output'];
+    stripeProductId: CodecTypes['mongo/string@1']['output'];
     updatedAt: CodecTypes['mongo/date@1']['output'];
+    cartItems: unbound_CartItem[];
     seller: unbound_User;
-    readonly [RelationKeys]?: 'seller';
+    readonly [RelationKeys]?: 'cartItems' | 'seller';
   };
   export type unbound_User = {
     _id: CodecTypes['mongo/objectId@1']['output'];
@@ -150,13 +184,15 @@ export namespace Models {
     profilePictureUrl: CodecTypes['mongo/string@1']['output'] | null;
     role: 'USER' | 'ADMIN';
     updatedAt: CodecTypes['mongo/date@1']['output'];
+    cartItem: unbound_CartItem[];
     products: unbound_Product[];
-    readonly [RelationKeys]?: 'products';
+    readonly [RelationKeys]?: 'cartItem' | 'products';
   };
 }
 
 export declare const models: {
   __unbound__: {
+    CartItem: Models.unbound_CartItem;
     Product: Models.unbound_Product;
     User: Models.unbound_User;
   };
@@ -172,14 +208,45 @@ type ContractBase = Omit<
         readonly kind: 'mongo-database';
         readonly entries: {
           readonly collection: {
-            readonly products: {
+            readonly cart_items: {
               readonly indexes: readonly [
                 {
-                  readonly keys: readonly [{ readonly direction: 1; readonly field: 'name' }];
+                  readonly keys: readonly [
+                    { readonly direction: 1; readonly field: 'userId' },
+                    { readonly direction: 1; readonly field: 'productId' },
+                  ];
                   readonly kind: 'mongo-index';
                   readonly unique: true;
                 },
               ];
+              readonly kind: 'mongo-collection';
+              readonly validator: {
+                readonly jsonSchema: {
+                  readonly additionalProperties: false;
+                  readonly bsonType: 'object';
+                  readonly properties: {
+                    readonly _id: { readonly bsonType: 'objectId' };
+                    readonly createdAt: { readonly bsonType: 'date' };
+                    readonly productId: { readonly bsonType: 'objectId' };
+                    readonly quantity: { readonly bsonType: 'int' };
+                    readonly updatedAt: { readonly bsonType: 'date' };
+                    readonly userId: { readonly bsonType: 'string' };
+                  };
+                  readonly required: readonly [
+                    '_id',
+                    'createdAt',
+                    'productId',
+                    'quantity',
+                    'updatedAt',
+                    'userId',
+                  ];
+                };
+                readonly kind: 'mongo-validator';
+                readonly validationAction: 'error';
+                readonly validationLevel: 'strict';
+              };
+            };
+            readonly products: {
               readonly kind: 'mongo-collection';
               readonly validator: {
                 readonly jsonSchema: {
@@ -230,6 +297,8 @@ type ContractBase = Omit<
                     readonly priceCents: { readonly bsonType: 'int' };
                     readonly sellerId: { readonly bsonType: 'string' };
                     readonly stock: { readonly bsonType: 'int' };
+                    readonly stripePriceId: { readonly bsonType: 'string' };
+                    readonly stripeProductId: { readonly bsonType: 'string' };
                     readonly updatedAt: { readonly bsonType: 'date' };
                   };
                   readonly required: readonly [
@@ -245,6 +314,8 @@ type ContractBase = Omit<
                     'priceCents',
                     'sellerId',
                     'stock',
+                    'stripePriceId',
+                    'stripeProductId',
                     'updatedAt',
                   ];
                 };
@@ -310,6 +381,10 @@ type ContractBase = Omit<
   readonly target: 'mongo';
   readonly targetFamily: 'mongo';
   readonly roots: {
+    readonly cart_items: {
+      readonly namespace: '__unbound__' & NamespaceId;
+      readonly model: 'CartItem';
+    };
     readonly products: {
       readonly namespace: '__unbound__' & NamespaceId;
       readonly model: 'Product';
@@ -320,6 +395,61 @@ type ContractBase = Omit<
     readonly namespaces: {
       readonly __unbound__: {
         readonly models: {
+          readonly CartItem: {
+            readonly fields: {
+              readonly _id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/date@1' };
+              };
+              readonly productId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
+              };
+              readonly quantity: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/int32@1' };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/date@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+            };
+            readonly relations: {
+              readonly product: {
+                readonly to: {
+                  readonly namespace: '__unbound__' & NamespaceId;
+                  readonly model: 'Product';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['productId'];
+                  readonly targetFields: readonly ['_id'];
+                };
+              };
+              readonly user: {
+                readonly to: {
+                  readonly namespace: '__unbound__' & NamespaceId;
+                  readonly model: 'User';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['_id'];
+                };
+              };
+            };
+            readonly storage: { readonly collection: 'cart_items' };
+          };
           readonly Product: {
             readonly fields: {
               readonly _id: {
@@ -375,12 +505,31 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/int32@1' };
               };
+              readonly stripePriceId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly stripeProductId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
               readonly updatedAt: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/date@1' };
               };
             };
             readonly relations: {
+              readonly cartItems: {
+                readonly to: {
+                  readonly namespace: '__unbound__' & NamespaceId;
+                  readonly model: 'CartItem';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['_id'];
+                  readonly targetFields: readonly ['productId'];
+                };
+              };
               readonly seller: {
                 readonly to: {
                   readonly namespace: '__unbound__' & NamespaceId;
@@ -448,6 +597,17 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
+              readonly cartItem: {
+                readonly to: {
+                  readonly namespace: '__unbound__' & NamespaceId;
+                  readonly model: 'CartItem';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['_id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
               readonly products: {
                 readonly to: {
                   readonly namespace: '__unbound__' & NamespaceId;

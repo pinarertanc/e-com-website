@@ -4,6 +4,10 @@
   "target": "mongo",
   "profileHash": "251b3ce23f6c9f561892e7c1af9d2cc941a13d64ba1aa7226b90036b09568cc3",
   "roots": {
+    "cart_items": {
+      "model": "CartItem",
+      "namespace": "__unbound__"
+    },
     "products": {
       "model": "Product",
       "namespace": "__unbound__"
@@ -132,6 +136,89 @@
           }
         },
         "models": {
+          "CartItem": {
+            "fields": {
+              "_id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/objectId@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/date@1",
+                  "kind": "scalar"
+                }
+              },
+              "productId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/objectId@1",
+                  "kind": "scalar"
+                }
+              },
+              "quantity": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/int32@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/date@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "product": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "productId"
+                  ],
+                  "targetFields": [
+                    "_id"
+                  ]
+                },
+                "to": {
+                  "model": "Product",
+                  "namespace": "__unbound__"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "_id"
+                  ]
+                },
+                "to": {
+                  "model": "User",
+                  "namespace": "__unbound__"
+                }
+              }
+            },
+            "storage": {
+              "collection": "cart_items"
+            }
+          },
           "Product": {
             "fields": {
               "_id": {
@@ -252,6 +339,20 @@
                   "kind": "scalar"
                 }
               },
+              "stripePriceId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "stripeProductId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
               "updatedAt": {
                 "nullable": false,
                 "type": {
@@ -261,6 +362,21 @@
               }
             },
             "relations": {
+              "cartItems": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "_id"
+                  ],
+                  "targetFields": [
+                    "productId"
+                  ]
+                },
+                "to": {
+                  "model": "CartItem",
+                  "namespace": "__unbound__"
+                }
+              },
               "seller": {
                 "cardinality": "N:1",
                 "nullable": false,
@@ -376,6 +492,21 @@
               }
             },
             "relations": {
+              "cartItem": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "_id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "CartItem",
+                  "namespace": "__unbound__"
+                }
+              },
               "products": {
                 "cardinality": "1:N",
                 "on": {
@@ -405,19 +536,63 @@
       "__unbound__": {
         "entries": {
           "collection": {
-            "products": {
+            "cart_items": {
               "indexes": [
                 {
                   "keys": [
                     {
                       "direction": 1,
-                      "field": "name"
+                      "field": "userId"
+                    },
+                    {
+                      "direction": 1,
+                      "field": "productId"
                     }
                   ],
                   "kind": "mongo-index",
                   "unique": true
                 }
               ],
+              "kind": "mongo-collection",
+              "validator": {
+                "jsonSchema": {
+                  "additionalProperties": false,
+                  "bsonType": "object",
+                  "properties": {
+                    "_id": {
+                      "bsonType": "objectId"
+                    },
+                    "createdAt": {
+                      "bsonType": "date"
+                    },
+                    "productId": {
+                      "bsonType": "objectId"
+                    },
+                    "quantity": {
+                      "bsonType": "int"
+                    },
+                    "updatedAt": {
+                      "bsonType": "date"
+                    },
+                    "userId": {
+                      "bsonType": "string"
+                    }
+                  },
+                  "required": [
+                    "_id",
+                    "createdAt",
+                    "productId",
+                    "quantity",
+                    "updatedAt",
+                    "userId"
+                  ]
+                },
+                "kind": "mongo-validator",
+                "validationAction": "error",
+                "validationLevel": "strict"
+              }
+            },
+            "products": {
               "kind": "mongo-collection",
               "validator": {
                 "jsonSchema": {
@@ -498,6 +673,12 @@
                     "stock": {
                       "bsonType": "int"
                     },
+                    "stripePriceId": {
+                      "bsonType": "string"
+                    },
+                    "stripeProductId": {
+                      "bsonType": "string"
+                    },
                     "updatedAt": {
                       "bsonType": "date"
                     }
@@ -515,6 +696,8 @@
                     "priceCents",
                     "sellerId",
                     "stock",
+                    "stripePriceId",
+                    "stripeProductId",
                     "updatedAt"
                   ]
                 },
@@ -666,7 +849,7 @@
         "kind": "mongo-database"
       }
     },
-    "storageHash": "496555c5952d9e4b45757fd4042ed5cedecac46cb182022fd2f119c8a2f076ef"
+    "storageHash": "3e34426a4977e98cb284d703665b860cd563ae8edcc945272a13b48eac032773"
   },
   "capabilities": {},
   "extensions": {},

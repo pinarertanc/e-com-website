@@ -29,6 +29,8 @@ type DbProduct = FieldOutputTypes["__unbound__"]["Product"];
     isActive: product.isActive,
     createdAt: product.createdAt,
     updatedAt: product.updatedAt,
+    stripePriceId: product.stripePriceId,
+    stripeProductId: product.stripeProductId,
   };
 }
 
@@ -105,6 +107,8 @@ export async function addProduct(
     isActive: product.isActive,
     createdAt: now,
     updatedAt: now,
+    stripePriceId: product.stripePriceId,
+    stripeProductId: product.stripeProductId,
   })
   return toAppProduct(createdProduct);
 }
@@ -125,6 +129,8 @@ export async function updateProduct(_id:string, product:Omit<Product, "id" | "cr
     stock: product.stock,
     imageUrls: product.imageUrls,
     isActive: product.isActive,
+    stripePriceId: product.stripePriceId,
+    stripeProductId: product.stripeProductId,
     updatedAt: now,
   })
   if(!updatedProduct){
@@ -143,6 +149,7 @@ export async function deleteProduct(_id:string): Promise<Product | null>{
   if(!deletedProduct){
     return null;
   }
+
   return toAppProduct(deletedProduct);
 }
 
