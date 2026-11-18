@@ -137,7 +137,7 @@ export function SearchBar() {
           onClick={handleCancel}
           type="button"
           variant="ghost"
-          className="w-full pl-10 pr-9 py-2 text-sm rounded-full bg-secondary/60 dark:bg-secondary/80 border border-border dark:border-primary/25 text-foreground placeholder:text-muted-foreground/70 transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 dark:shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)] focus:shadow-md focus:shadow-primary/20"
+          className="shrink-0 rounded-full px-3 h-9 text-xs py-2 text-sm rounded-full bg-secondary/60 dark:bg-secondary/80 border border-border dark:border-primary/25 text-foreground placeholder:text-muted-foreground/70 transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 dark:shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)] focus:shadow-md focus:shadow-primary/20"
         >
           Vazgeç
         </Button>

@@ -11,6 +11,7 @@ import {
 import { Currency, formatPrice } from "@/types/currency";
 import { formatCategoryLabel, type ProductCategory } from "@/types/product";
 import { CheckoutButton } from "./checkout-button";
+import { AddToCartButton } from "./add-to-cart-button";
 
 type ProductCardProps = {
   id: string;
@@ -31,7 +32,7 @@ export function ProductCard({
   currency,
   category,
   imageUrl,
-  stripePriceId,
+  id,
   quantity,
 }: ProductCardProps) {
   const priceLabel = formatPrice(
@@ -65,7 +66,7 @@ export function ProductCard({
       </CardHeader>
       <CardFooter className="border-t border-border pt-4 flex justify-between">
         <p className="text-lg font-semibold text-foreground">{priceLabel}</p>
-        <CheckoutButton stripePriceId={stripePriceId} quantity={quantity}/>
+        <AddToCartButton productId={id} disabled={quantity === "0"} />
       </CardFooter>
     </Card>
   );

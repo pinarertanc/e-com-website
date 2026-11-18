@@ -29,7 +29,7 @@ model Product {
 model CartItem {
   id        ObjectId     @id  @map("_id") 
 
-  userId    ObjectId
+  userId    String
   user      User      @relation("UserCartItems", fields: [userId], references: [id])
  
   productId ObjectId

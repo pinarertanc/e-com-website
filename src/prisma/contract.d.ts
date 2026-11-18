@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-mongo/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'0db32dc31cf7167561824d66238e4dd68da4f9b2efede76db47b4c5615f25c57'>;
+  StorageHashBase<'3e34426a4977e98cb284d703665b860cd563ae8edcc945272a13b48eac032773'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'251b3ce23f6c9f561892e7c1af9d2cc941a13d64ba1aa7226b90036b09568cc3'>;
@@ -33,7 +33,7 @@ export type FieldOutputTypes = {
       readonly productId: CodecTypes['mongo/objectId@1']['output'];
       readonly quantity: CodecTypes['mongo/int32@1']['output'];
       readonly updatedAt: CodecTypes['mongo/date@1']['output'];
-      readonly userId: CodecTypes['mongo/objectId@1']['output'];
+      readonly userId: CodecTypes['mongo/string@1']['output'];
     };
     readonly Product: {
       readonly _id: CodecTypes['mongo/objectId@1']['output'];
@@ -85,7 +85,7 @@ export type FieldInputTypes = {
       readonly productId: CodecTypes['mongo/objectId@1']['input'];
       readonly quantity: CodecTypes['mongo/int32@1']['input'];
       readonly updatedAt: CodecTypes['mongo/date@1']['input'];
-      readonly userId: CodecTypes['mongo/objectId@1']['input'];
+      readonly userId: CodecTypes['mongo/string@1']['input'];
     };
     readonly Product: {
       readonly _id: CodecTypes['mongo/objectId@1']['input'];
@@ -137,7 +137,7 @@ export namespace Models {
     productId: CodecTypes['mongo/objectId@1']['output'];
     quantity: CodecTypes['mongo/int32@1']['output'];
     updatedAt: CodecTypes['mongo/date@1']['output'];
-    userId: CodecTypes['mongo/objectId@1']['output'];
+    userId: CodecTypes['mongo/string@1']['output'];
     product: unbound_Product;
     user: unbound_User;
     readonly [RelationKeys]?: 'product' | 'user';
@@ -230,7 +230,7 @@ type ContractBase = Omit<
                     readonly productId: { readonly bsonType: 'objectId' };
                     readonly quantity: { readonly bsonType: 'int' };
                     readonly updatedAt: { readonly bsonType: 'date' };
-                    readonly userId: { readonly bsonType: 'objectId' };
+                    readonly userId: { readonly bsonType: 'string' };
                   };
                   readonly required: readonly [
                     '_id',
@@ -419,7 +419,7 @@ type ContractBase = Omit<
               };
               readonly userId: {
                 readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
               };
             };
             readonly relations: {

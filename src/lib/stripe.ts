@@ -38,3 +38,64 @@ export async function archiveStripeProduct(stripeProductId: string) {
 }
 
 
+interface SyncStripeProductParams {
+  existingStripeProductId?: string | null;
+  existingStripePriceId?: string | null;
+  name: string;
+  description: string;
+  priceCents: number;
+  currency: string;
+  isActive: boolean;
+  isPriceChanged: boolean;
+  isDetailsChanged: boolean;
+}
+
+export async function syncStripeProduct({
+  existingStripeProductId,
+  existingStripePriceId,
+  name,
+  description,
+  priceCents,
+  currency,
+  isActive,
+  isPriceChanged,
+  isDetailsChanged,
+}: SyncStripeProductParams): Promise<{
+  stripeProductId: string;
+  stripePriceId: string;
+}> {
+  let stripeProductId = existingStripeProductId || "";
+  let stripePriceId = existingStripePriceId || "";
+
+
+  if (!stripeProductId) {
+    const createdProduct = await stripe.products.create({
+      name,
+      description,
+      active: isActive,
+    });
+    stripeProductId = createdProduct.id;
+  } else if (isDetailsChanged) {
+    await stripe.products.update(stripeProductId, {
+      name,
+      description,
+      active: isActive,
+    });
+  }
+
+  if (!stripePriceId || isPriceChanged) {
+    const newPrice = await stripe.prices.create({
+      product: stripeProductId,
+      unit_amount: priceCents,
+      currency: currency.toLowerCase(),
+    });
+
+    if (stripePriceId) {
+      await stripe.prices.update(stripePriceId, { active: false });
+    }
+
+    stripePriceId = newPrice.id;
+  }
+
+  return { stripeProductId, stripePriceId };
+}

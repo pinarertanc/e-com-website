@@ -4,22 +4,21 @@ import { useActionState, useState} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FormField } from "../formField";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ACCEPTED_IMAGE_ACCEPT_ATTR } from "@/lib/product-images";
 import { EU_CURRENCY_OPTIONS } from "@/types/currency";
-import { PRODUCT_CATEGORY_OPTIONS, CONDITION_OPTIONS, Product, AGE_GROUP_OPTIONS } from "@/types/product";
+import { PRODUCT_CATEGORY_OPTIONS, CONDITION_OPTIONS, AGE_GROUP_OPTIONS,EditProductFormProps, UpdateProductState } from "@/types/product";
 import { updateProductAction} from "@/app/(require-admin)/admin/products/[id]/edit/action";
-import { ProductActionState } from '@/types/product';
-type EditProductFormProps = {
-  product: Product;
-};
 
-const initialState: ProductActionState = {
-  error: null,
+
+const initialState: UpdateProductState = {
+  success: false,
+  message: "",
+  error: undefined,
+  fieldErrors: {},
 };
 
 export function EditProductForm({ product }: EditProductFormProps) {
@@ -46,12 +45,23 @@ export function EditProductForm({ product }: EditProductFormProps) {
        <Input type="hidden" name="stripePriceId" value={product.stripePriceId} />
 
 
-      {state?.error && (
+      {(state?.error || (state?.message && !state?.success)) && (
         <div
           role="alert"
-          className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive"
+          className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive space-y-1"
         >
-          {state.error}
+          <p className="font-medium">{state.error || state.message}</p>
+          {state.fieldErrors && Object.keys(state.fieldErrors).length > 0 && (
+            <ul className="list-disc pl-5 text-xs">
+              {Object.entries(state.fieldErrors).map(([field, err]) =>
+                err ? (
+                  <li key={field}>
+                    <strong>{field}:</strong> {err}
+                  </li>
+                ) : null
+              )}
+            </ul>
+          )}
         </div>
       )}
 

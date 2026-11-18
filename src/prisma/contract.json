@@ -176,7 +176,7 @@
               "userId": {
                 "nullable": false,
                 "type": {
-                  "codecId": "mongo/objectId@1",
+                  "codecId": "mongo/string@1",
                   "kind": "scalar"
                 }
               }
@@ -575,7 +575,7 @@
                       "bsonType": "date"
                     },
                     "userId": {
-                      "bsonType": "objectId"
+                      "bsonType": "string"
                     }
                   },
                   "required": [
@@ -849,7 +849,7 @@
         "kind": "mongo-database"
       }
     },
-    "storageHash": "0db32dc31cf7167561824d66238e4dd68da4f9b2efede76db47b4c5615f25c57"
+    "storageHash": "3e34426a4977e98cb284d703665b860cd563ae8edcc945272a13b48eac032773"
   },
   "capabilities": {},
   "extensions": {},

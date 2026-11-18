@@ -1,8 +1,8 @@
-import Image from "next/image";
-import Link from "next/link";
 
-import {Input} from "@/components/ui/input"
-import { Button } from "@/components/ui/button";
+'use client';
+
+import Image from "next/image";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -11,71 +11,83 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { Currency, formatPrice } from "@/types/currency";
-import { MutedText, PageTitle } from "../typography";
-import type { Product } from "@/types/product";
+import type { CartItemsWithProduct } from "@/types/cart";
 
 interface CheckoutProductsTableProps {
-  products : Product[];
+  items: CartItemsWithProduct[];
+  selectedIds: string[];
+  onToggleSelect: (id: string) => void;
+  onToggleAll: () => void;
 }
 
-export async function CheckoutProductsTable({products}:CheckoutProductsTableProps) {
- 
-
-  if (products.length === 0) {
-    return (
-      <div className="flex min-h-48 flex-col items-center justify-center rounded-xl border border-dashed border-border bg-muted/30 px-6 py-12 text-center">
-        <PageTitle>Sepet</PageTitle>
-        <MutedText>Henüz sepetinizde ürün bulunmamaktadır.</MutedText>
-
-        <Button asChild className="mt-4">
-          <Link href="/home">Alışverişe Devam Et</Link>
-        </Button>
-      </div>
-    );
-  }
+export function CheckoutProductsTable({
+  items,
+  selectedIds,
+  onToggleSelect,
+  onToggleAll,
+}: CheckoutProductsTableProps) {
+  const isAllSelected = items.length > 0 && selectedIds.length === items.length;
 
   return (
-    <div className="rounded-xl border border-border w-1/2">
+    <div className="w-full flex-1 overflow-hidden rounded-xl border border-border">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-16">Select</TableHead>
-            <TableHead className="w-16">Image</TableHead>
-            <TableHead>Name</TableHead> 
-            <TableHead>Quantity</TableHead> 
-            <TableHead>Price</TableHead>
-            
+            <TableHead className="w-12">
+              <Input
+                type="checkbox"
+                className="size-4 cursor-pointer"
+                checked={isAllSelected}
+                onChange={onToggleAll}
+                aria-label="Tümünü seç"
+              />
+            </TableHead>
+            <TableHead className="w-16">Görsel</TableHead>
+            <TableHead>Ürün</TableHead>
+            <TableHead className="text-center">Adet</TableHead>
+            <TableHead className="text-right">Toplam Fiyat</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {products.map((item) => (
-            <TableRow key={item.id}>
-              <TableCell>
-                <Input type="checkbox" className="size-5 " defaultChecked></Input>
-              </TableCell>
-              <TableCell>
-                <div className="relative size-10 overflow-hidden rounded-md bg-muted">
-                  {item.imageUrls[0] ? (
-                    <Image
-                      src={item.imageUrls[0]}
-                      alt={item.name}
-                      fill
-                      className="object-cover"
-                      sizes="40px"
-                      loading="eager"
-                    />
-                  ) : null}
-                </div>
-              </TableCell>
-              <TableCell className="font-medium">{item.name}</TableCell>
-              <TableCell className="font-medium">{item.quantity}</TableCell>
-              <TableCell>
-                {formatPrice(item.priceCents, item.currency as Currency)}
-              </TableCell>
-            </TableRow>
-          ))}
+          {items.map(({ id, product, quantity }) => {
+            const isChecked = selectedIds.includes(id);
+            const rowTotalCents = product.priceCents * quantity;
+
+            return (
+              <TableRow
+                key={id}
+                className={`transition-opacity ${!isChecked ? "opacity-50" : ""}`}
+              >
+                <TableCell>
+                  <Input
+                    type="checkbox"
+                    className="size-4 cursor-pointer"
+                    checked={isChecked}
+                    onChange={() => onToggleSelect(id)}
+                  />
+                </TableCell>
+                <TableCell>
+                  <div className="relative size-12 overflow-hidden rounded-md bg-muted">
+                    {product.imageUrls?.[0] ? (
+                      <Image
+                        src={product.imageUrls[0]}
+                        alt={product.name}
+                        fill
+                        className="object-cover"
+                        sizes="48px"
+                      />
+                    ) : null}
+                  </div>
+                </TableCell>
+                <TableCell className="font-medium">{product.name}</TableCell>
+                <TableCell className="text-center">{quantity}</TableCell>
+                <TableCell className="text-right font-medium">
+                  {formatPrice(rowTotalCents, product.currency as Currency)}
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </div>

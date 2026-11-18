@@ -1,33 +1,27 @@
+import {CartView} from "@/components/storefront/cart-view";
+import { getSessionUser } from "@/lib/auth0";
+import { getCartItemsByUserId } from "@/lib/cart";
+import { redirect } from "next/navigation";
+import { PageTitle } from "@/components/typography";
 
 
-import { CheckoutProductsTable } from "@/components/storefront/checkout-product-table";
-import { CheckoutSummary } from "@/components/storefront/checkout-summary";
-import { PageTitle} from "@/components/typography";
-import { getProductById } from "@/lib/products";
+export default async function CartPage() {
 
-import { notFound } from "next/navigation";
+  const user = await getSessionUser();
 
-type CartPageProps = {
-  params: Promise <{id: string}>
-}
+  if(!user || !user.sub){
+    redirect("/auth/login");
+  }
 
-export default async function CartPage({params}: CartPageProps) {
+  const cartItems = await getCartItemsByUserId(user.sub);
 
-  const {id} = await params;  
-  const product = await getProductById(id);
-
-   if (!product) {
-       notFound();
-     }
-
-  return (
-     <main className="space-y-6 p-6 ">
-    <div className="space-y-2 p-6 ">
-      <div className="flex flex-col md:flex-row items-start gap-8 justify-center">
-      <CheckoutProductsTable products={[product]}/>
-      <CheckoutSummary product={product}/>
-      </div>
-    </div>
+  return(
+    <main className="container mx-auto space-y-6 p-6">
+      <PageTitle>Sepetim</PageTitle>
+      <CartView initialItems={cartItems} />
     </main>
   );
+
+  
+
 }

@@ -145,6 +145,7 @@ export type EditProductFormProps = {
   product : Product;
 };
 
+
 export type UpdateProductState = {
   error?: string;
   success?: boolean;
